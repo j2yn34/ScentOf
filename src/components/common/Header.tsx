@@ -57,10 +57,14 @@ const Header = () => {
         <div className="navbar hidden md:flex py-0">
           <ul className="menu menu-horizontal px-1 text-md text-base">
             <li>
-              <a>향기 리뷰</a>
+              <Link to="/review">
+                <a>향기 리뷰</a>
+              </Link>
             </li>
             <li>
-              <a>제품 추천</a>
+              <Link to="/recommend">
+                <a>제품 추천</a>
+              </Link>
             </li>
           </ul>
         </div>
@@ -70,7 +74,9 @@ const Header = () => {
               <a className="search">검색</a>
             </li>
             <li>
-              <a className="login">로그인</a>
+              <Link to="/login">
+                <a className="login">로그인</a>
+              </Link>
             </li>
           </ul>
         </div>
