@@ -2,7 +2,27 @@
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    screens: {
+      sm: "480px",
+      md: "768px",
+      lg: "1025px",
+      xl: "1248px",
+    },
+    extend: {
+      colors: {
+        beige: "#F6F3F0",
+        "brown-200": "#E6D4C2",
+        "brown-300": "#C2A788",
+        "brown-400": "#9B8772",
+        "brown-500": "#695C4F",
+        brown: "#3B3936",
+        green: "06AC59",
+        red: "FB3535",
+      },
+    },
+  },
+  daisyui: {
+    themes: [],
   },
   plugins: [require("daisyui")],
 };
