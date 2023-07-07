@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const Header = () => {
   return (
     <div className="fixed z-10 w-full navbar bg-beige p-0">
@@ -31,7 +33,7 @@ const Header = () => {
             </li>
           </ul>
         </div>
-        <a className="logo ml-2">
+        <Link to="/" className="logo ml-2">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="97"
@@ -51,7 +53,7 @@ const Header = () => {
               </tspan>
             </text>
           </svg>
-        </a>
+        </Link>
         <div className="navbar hidden md:flex py-0">
           <ul className="menu menu-horizontal px-1 text-md text-base">
             <li>
