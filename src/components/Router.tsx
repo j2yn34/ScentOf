@@ -1,9 +1,9 @@
 import { Routes, Route } from "react-router-dom";
-import Index from "../pages/views/Index";
+import Index from "../pages/Index";
 import Login from "../pages/member/Login";
 import Signup from "../pages/member/Signup";
-import Review from "../pages/review/Review";
-import Recommend from "../pages/recommend/Recommend";
+import Review from "../pages/Review";
+import Recommend from "../pages/Recommend";
 
 const Router = () => {
   return (
