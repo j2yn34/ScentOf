@@ -23,13 +23,17 @@ const Header = () => {
           </label>
           <ul
             tabIndex={0}
-            className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+            className="menu menu-sm dropdown-content mt-2 z-[1] p-0 shadow bg-white w-52"
           >
-            <li>
-              <a>향기 리뷰</a>
+            <li className="hover:bg-beige">
+              <Link to="/review">
+                <a className="py-4">향기 리뷰</a>
+              </Link>
             </li>
-            <li>
-              <a>제품 추천</a>
+            <li className="hover:bg-beige">
+              <Link to="/recommend">
+                <a className="py-4">제품 추천</a>
+              </Link>
             </li>
           </ul>
         </div>

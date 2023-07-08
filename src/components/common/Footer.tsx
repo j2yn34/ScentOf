@@ -1,6 +1,6 @@
 const Footer = () => {
   return (
-    <footer className="footer footer-center p-4 bg-brown-200 text-xs text-brown-500">
+    <footer className="footer footer-center p-4 bg-brown-200 text-xs text-brown-500 mt-16">
       <div>
         <p>Copyright © 2023 ScentOf All rights reserved</p>
         <a href="https://github.com/j2yn34/ScentOf" target="_blank">

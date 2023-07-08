@@ -6,7 +6,7 @@ export default {
       sm: "480px",
       md: "768px",
       lg: "1025px",
-      xl: "1248px",
+      xl: "1280px",
     },
     extend: {
       colors: {
@@ -15,6 +15,7 @@ export default {
         "brown-300": "#C2A788",
         "brown-400": "#9B8772",
         "brown-500": "#695C4F",
+        "brown-600": "#504538",
         brown: "#3B3936",
         green: "06AC59",
         red: "FB3535",
