@@ -4,7 +4,7 @@ export interface ReviewData {
   productName: string;
   reviewTitle: string;
   nickname: string;
-  rate: number;
+  rating: number;
   id: number;
 }
 
@@ -16,7 +16,7 @@ export const reviewData: ReviewData[] = [
     productName: "제품명1",
     reviewTitle: "한줄평 리뷰 제목",
     nickname: "닉네임1",
-    rate: 3.5,
+    rating: 4.5,
     id: 1,
   },
   {
@@ -26,7 +26,7 @@ export const reviewData: ReviewData[] = [
     productName: "제품명2",
     reviewTitle: "한줄평 리뷰 제목",
     nickname: "닉네임2",
-    rate: 4,
+    rating: 4,
     id: 2,
   },
   {
@@ -36,7 +36,7 @@ export const reviewData: ReviewData[] = [
     productName: "제품명3",
     reviewTitle: "한줄평 리뷰 제목",
     nickname: "닉네임3",
-    rate: 5,
+    rating: 3.5,
     id: 3,
   },
 ];

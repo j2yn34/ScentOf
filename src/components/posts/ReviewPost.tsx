@@ -21,7 +21,7 @@ const ReviewPost = (): JSX.Element => {
                 alt="이미지"
               />
             </figure>
-            <Rating />
+            <Rating rating={review.rating} />
           </div>
           <div className="card-body p-0 pl-4 gap-0">
             <span className="text-xs text-brown-300">{review.brandName}</span>
