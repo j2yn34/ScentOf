@@ -28,7 +28,7 @@ const ReviewPost = (): JSX.Element => {
             <h2 className="card-title py-1 text-brown-900">
               {review.productName}
             </h2>
-            <p className="text-sm text-brown-500">{review.reviewTitle}</p>
+            <p className="text-sm text-brown-500">{review.title}</p>
             <div className="flex flex-col items-end mt-2">
               <span className="text-right text-sm text-brown-400 my-1">
                 {review.nickname}

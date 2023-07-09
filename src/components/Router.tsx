@@ -15,6 +15,7 @@ const Router = () => {
       <Route path="/review" element={<Review />} />
       <Route path="/review/:id" element={<ReviewDetail />} />
       <Route path="/recommend" element={<Recommend />} />
+      <Route path="/recommend/:id" element={<Recommend />} />
     </Routes>
   );
 };
