@@ -6,24 +6,24 @@ const ReviewPost = (): JSX.Element => {
   const limit = 3;
 
   return (
-    <div className="lg:flex lg:flex-row sm:flex sm:flex-col gap-6">
+    <div className="grid grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
       {reviewData.slice(0, limit).map((review, index) => (
         <Link
           to={`/review/${review.id}`}
           key={index}
-          className="card card-side bg-beige p-4 flex-1"
+          className="card card-side bg-beige p-4"
         >
           <div>
             <figure className="rounded md:shrink-0 mb-2">
               <img
-                className="rounded w-[128px] h-[146px]"
+                className="rounded w-[126px] h-[140px]"
                 src={review.imageUrl}
                 alt="이미지"
               />
             </figure>
             <Rating rating={review.rating} />
           </div>
-          <div className="card-body p-0 pl-4 gap-0">
+          <div className="card-body p-0 pl-3.5 gap-0">
             <span className="text-sm text-brown-300">{review.brandName}</span>
             <h2 className="card-title py-1 text-brown-900">
               {review.productName}

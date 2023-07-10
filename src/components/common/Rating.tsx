@@ -27,7 +27,7 @@ const Rating = ({ rating }: Rating): JSX.Element => {
           );
         })}
       </div>
-      <div className="ml-2">{rating}</div>
+      {/* <div className="ml-2">{rating}</div> */}
     </div>
   );
 };
