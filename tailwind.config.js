@@ -20,6 +20,12 @@ export default {
         green: "06AC59",
         red: "FB3535",
       },
+      width: {
+        "arrowSize-sm": "8px",
+      },
+      height: {
+        "arrowSize-sm": "8px",
+      },
     },
   },
   daisyui: {

@@ -22,7 +22,7 @@ const Pagination = ({
           currentPage === 1 ? "disabled" : ""
         }`}
       >
-        <span className="block aria-hidden w-[8px] h-[8px] border-b border-l border-brown-400 origin-center rotate-45" />
+        <span className="arrow-left-sm border-brown-400 aria-hidden" />
         <span className="text-brown-400 mr-2.5 text-sm">이전</span>
       </button>
       {new Array(maxPage).fill(null).map((_, index) => (
@@ -39,7 +39,7 @@ const Pagination = ({
         }`}
       >
         <span className="text-brown-400 ml-2.5 text-sm">다음</span>
-        <span className="block aria-hidden w-[8px] h-[8px] border-t border-r border-brown-400 origin-center rotate-45" />
+        <span className="arrow-right-sm border-brown-400 aria-hidden" />
       </button>
     </div>
   );

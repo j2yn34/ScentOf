@@ -14,9 +14,9 @@ const Index = () => {
         </div>
         <ReviewPost />
         <Link to="/review" className="block w-[70px] h-[26px] mx-auto">
-          <div className="mt-8 flex justify-center items-center hover:border-b hover:border-brown-500 transition-all">
+          <div className="mt-9 flex justify-center items-center hover:border-b hover:border-brown-500 transition-all">
             <span className="text-brown-500">더보기</span>
-            <span className="ml-1 block aria-hidden w-[8px] h-[8px] border-t border-r border-brown-500 origin-center rotate-45"></span>
+            <span className="arrow-right-sm border-brown-500 aria-hidden ml-1" />
           </div>
         </Link>
       </div>
@@ -29,9 +29,9 @@ const Index = () => {
         </div>
         <RecommendPost />
         <Link to="/recommend" className="block w-[70px] h-[26px] mx-auto">
-          <div className="mt-8 flex justify-center items-center hover:border-b hover:border-brown-500 transition-all">
+          <div className="mt-9 flex justify-center items-center hover:border-b hover:border-brown-500 transition-all">
             <span className="text-brown-500">더보기</span>
-            <span className="ml-1 block aria-hidden w-[8px] h-[8px] border-t border-r border-brown-500 origin-center rotate-45"></span>
+            <span className="arrow-right-sm border-brown-500 aria-hidden ml-1" />
           </div>
         </Link>
       </div>

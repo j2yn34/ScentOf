@@ -17,3 +17,19 @@
   opacity: 0.3;
   pointer-events: none;
 }
+
+.arrow-left-sm {
+  @apply w-arrowSize-sm h-arrowSize-sm border-b border-l origin-center rotate-45;
+}
+
+.arrow-right-sm {
+  @apply w-arrowSize-sm h-arrowSize-sm border-t border-r origin-center rotate-45;
+}
+
+.arrow-up-sm {
+  @apply w-arrowSize-sm h-arrowSize-sm border-t border-l origin-center rotate-45;
+}
+
+.arrow-down-sm {
+  @apply w-arrowSize-sm h-arrowSize-sm border-b border-r origin-center rotate-45;
+}
