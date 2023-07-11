@@ -11,7 +11,7 @@ const ReviewPost = (): JSX.Element => {
         <Link
           to={`/review/${review.id}`}
           key={index}
-          className="card card-side bg-beige p-4"
+          className="card card-side bg-beige p-4 hover:drop-shadow-md transition-all outline-none"
         >
           <div>
             <figure className="rounded md:shrink-0 mb-2">

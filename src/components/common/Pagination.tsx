@@ -16,7 +16,7 @@ const Pagination = ({
   onClickPageButton,
 }: Pagenation): JSX.Element => {
   return (
-    <div className="mt-9 flex justify-center items-center">
+    <div className="mt-11 flex justify-center items-center">
       <button
         className={`flex flex-row items-center ${
           currentPage === 1 ? "disabled" : ""
