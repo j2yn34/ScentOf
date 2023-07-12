@@ -1,6 +1,30 @@
 import { Link } from "react-router-dom";
+import { useState, ChangeEvent, FormEvent } from "react";
+import { auth } from "../../database/initialize";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    if (name === "email") {
+      setEmail(value);
+    } else if (name === "password") {
+      setPassword(value);
+    }
+  };
+
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div
       className="flex items-center justify-center mx-auto text-center"
@@ -8,13 +32,15 @@ const Login = () => {
     >
       <div className="flex flex-col items-center max-w-md w-full">
         <h1 className="text-2xl text-brown-900 mb-4">로그인</h1>
-        <form className="form-control w-full max-w-xs">
+        <form onSubmit={onSubmit} className="form-control w-full max-w-xs">
           <input
             name="email"
             type="email"
             placeholder="이메일을 입력해 주세요."
             className="input w-full placeholder:text-sm"
             required
+            value={email}
+            onChange={onChange}
           />
           <label className="label">
             <span className="label-text-alt">Bottom Left label</span>
@@ -26,6 +52,8 @@ const Login = () => {
             placeholder="비밀번호를 입력해 주세요."
             className="input w-full placeholder:text-sm"
             required
+            value={password}
+            onChange={onChange}
           />
           <label className="label">
             <span className="label-text-alt">Bottom Left label</span>
