@@ -6,14 +6,16 @@ const Signup = () => {
     >
       <div className="flex flex-col items-center max-w-md w-full">
         <h1 className="text-2xl text-brown-900">회원가입</h1>
-        <div className="form-control w-full max-w-xs">
+        <form className="form-control w-full max-w-xs">
           <label className="label">
             <span className="label-text text-[16px]">이메일</span>
           </label>
           <input
+            name="email"
             type="email"
             placeholder="이메일을 입력해 주세요."
             className="input w-full placeholder:text-sm"
+            required
           />
           <label className="label pb-0">
             <span className="label-text-alt">Bottom Left label</span>
@@ -23,9 +25,11 @@ const Signup = () => {
             <span className="label-text text-[16px]">비밀번호</span>
           </label>
           <input
+            name="password"
             type="password"
             placeholder="비밀번호를 입력해 주세요."
             className="input w-full placeholder:text-sm"
+            required
           />
           <label className="label pb-0">
             <span className="label-text-alt">Bottom Left label</span>
@@ -38,6 +42,7 @@ const Signup = () => {
             type="password"
             placeholder="비밀번호를 한 번 더 입력해 주세요."
             className="input w-full placeholder:text-sm"
+            required
           />
           <label className="label pb-0">
             <span className="label-text-alt">Bottom Left label</span>
@@ -50,18 +55,19 @@ const Signup = () => {
             type="password"
             placeholder="닉네임을 입력해 주세요."
             className="input w-full placeholder:text-sm"
+            required
           />
-          <label className="label pb-0">
+          <label className="label ">
             <span className="label-text-alt">Bottom Left label</span>
           </label>
 
           <button
-            className="btn bg-brown-500 text-white hover:bg-brown-600 mt-6"
+            className="btn bg-brown-500 text-white hover:bg-brown-600 "
             type="submit"
           >
             가입하기
           </button>
-        </div>
+        </form>
       </div>
     </div>
   );
