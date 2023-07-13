@@ -11,7 +11,7 @@ const Recommend = (): JSX.Element => {
         <h2 className="text-2xl lg:text-2xl text-left font-bold">추천 질문</h2>
         <span className="ml-3.5 text-brown-400">추천해 주세요!</span>
       </div>
-      <RecommendPost />
+      <RecommendPost limit={8} />
       <Pagination
         maxPage={5}
         currentPage={page}

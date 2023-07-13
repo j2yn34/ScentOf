@@ -12,7 +12,7 @@ const Index = () => {
           </h2>
           <span className="ml-3.5 text-brown-400">업데이트 된 리뷰</span>
         </div>
-        <ReviewPost />
+        <ReviewPost limit={3} />
         <Link to="/review" className="block w-[70px] h-[26px] mx-auto">
           <div className="mt-10 flex justify-center items-center border-b border-brown-500">
             <span className="text-brown-500">더보기</span>
@@ -27,7 +27,7 @@ const Index = () => {
           </h2>
           <span className="ml-3.5 text-brown-400">추천해 주세요!</span>
         </div>
-        <RecommendPost />
+        <RecommendPost limit={4} />
         <Link to="/recommend" className="block w-[70px] h-[26px] mx-auto">
           <div className="mt-10 flex justify-center items-center border-b border-brown-500">
             <span className="text-brown-500">더보기</span>

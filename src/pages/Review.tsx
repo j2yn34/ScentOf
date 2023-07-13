@@ -13,7 +13,7 @@ const Review = () => {
           다양한 리뷰를 확인해 보세요
         </span>
       </div>
-      <ReviewPost />
+      <ReviewPost limit={6} />
       <Pagination
         maxPage={5}
         currentPage={page}

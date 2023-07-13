@@ -2,9 +2,7 @@ import { Link } from "react-router-dom";
 import Rating from "../common/Rating";
 import { reviewData } from "../../database/sampleData";
 
-const ReviewPost = (): JSX.Element => {
-  const limit = 3;
-
+const ReviewPost = ({ limit }: { limit: number }): JSX.Element => {
   return (
     <div className="grid grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
       {reviewData.slice(0, limit).map((review, index) => (

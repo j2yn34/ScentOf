@@ -46,6 +46,36 @@ export const reviewData: ReviewData[] = [
     nickname: "닉네임3",
     rating: 3.5,
   },
+  {
+    id: 4,
+    imageUrl:
+      "https://shop.dior.co.kr/cdn/shop/products/3348901627375_0_800x.jpg?v=1671502598",
+    brandName: "브랜드명",
+    productName: "제품명4",
+    title: "한줄평 리뷰 제목",
+    nickname: "닉네임1",
+    rating: 4.5,
+  },
+  {
+    id: 5,
+    imageUrl:
+      "https://www.dailygrid.net/news/photo/201905/222119_121434_5843.jpg",
+    brandName: "브랜드명",
+    productName: "제품명5",
+    title: "한줄평 리뷰 제목",
+    nickname: "닉네임2",
+    rating: 4,
+  },
+  {
+    id: 6,
+    imageUrl:
+      "https://nonfiction.com/web/product/small/202008/9475d4ce8aa398a0e69c3b0f98a4c335.jpg",
+    brandName: "브랜드명",
+    productName: "제품명6",
+    title: "한줄평 리뷰 제목",
+    nickname: "닉네임3",
+    rating: 3.5,
+  },
 ];
 
 export const recommendData: RecommendData[] = [
@@ -71,6 +101,30 @@ export const recommendData: RecommendData[] = [
     id: 4,
     title: "추천질문 제목4",
     nickname: "닉네임4",
+    postedDate: 2023 - 7 - 10,
+  },
+  {
+    id: 5,
+    title: "추천질문 제목5",
+    nickname: "닉네임5",
+    postedDate: 2023 - 7 - 7,
+  },
+  {
+    id: 6,
+    title: "추천질문 제목6",
+    nickname: "닉네임6",
+    postedDate: 2023 - 7 - 8,
+  },
+  {
+    id: 7,
+    title: "추천질문 제목7",
+    nickname: "닉네임7",
+    postedDate: 2023 - 7 - 9,
+  },
+  {
+    id: 8,
+    title: "추천질문 제목8",
+    nickname: "닉네임8",
     postedDate: 2023 - 7 - 10,
   },
 ];
