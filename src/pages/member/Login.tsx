@@ -1,7 +1,13 @@
 import { Link } from "react-router-dom";
 import { useState, ChangeEvent, FormEvent, useEffect } from "react";
 import { auth } from "../../database/initialize";
-import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import {
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signOut,
+} from "firebase/auth";
 import { useSetRecoilState } from "recoil";
 import { isLoggedInState } from "../../state/authState";
 
@@ -33,7 +39,20 @@ const Login = () => {
       alert("안녕하세요! 로그인 되었습니다.");
       setIsLoggedIn(true);
     } catch (error) {
-      console.log(error);
+      console.error("로그인 실패:", error);
+    }
+  };
+
+  const onGoogleClick: React.MouseEventHandler<
+    HTMLButtonElement
+  > = async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      await signOut(auth);
+      await signInWithPopup(auth, provider);
+      alert("안녕하세요! 로그인 되었습니다.");
+    } catch (error) {
+      console.error("구글 로그인 실패:", error);
     }
   };
 
@@ -80,8 +99,11 @@ const Login = () => {
         </form>
 
         <div className="mt-3 w-full max-w-xs">
-          <button className="btn bg-white text-brown hover:bg-beige w-full">
-            구글 로그인
+          <button
+            onClick={onGoogleClick}
+            className="btn bg-white text-brown hover:bg-beige w-full"
+          >
+            구글 로그인/ 회원가입
           </button>
 
           <p className="mt-8 mb-3 text-sm">
