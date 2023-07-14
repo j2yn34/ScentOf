@@ -1,10 +1,11 @@
 import { ChangeEvent, useState, FormEvent } from "react";
-import { auth } from "../../database/initialize";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../database/initialize";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [newAccount, setNewAccount] = useState(true);
 
   const onChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -15,13 +16,12 @@ const Signup = () => {
     }
   };
 
-  const [newAcount, setNewAccount] = useState(true);
-
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      if (newAcount) {
+      if (newAccount) {
         await createUserWithEmailAndPassword(auth, email, password);
+        alert("센트오브의 회원이 되신 걸 환영합니다!");
       }
     } catch (error) {
       console.log(error);
@@ -37,7 +37,7 @@ const Signup = () => {
         <h1 className="text-2xl text-brown-900">회원가입</h1>
         <form onSubmit={onSubmit} className="form-control w-full max-w-xs">
           <label className="label">
-            <span className="label-text text-[16px]">이메일</span>
+            <span className="label-text text-base">이메일</span>
           </label>
           <input
             name="email"
@@ -53,7 +53,7 @@ const Signup = () => {
           </label>
 
           <label className="label">
-            <span className="label-text text-[16px]">비밀번호</span>
+            <span className="label-text text-base">비밀번호</span>
           </label>
           <input
             name="password"
@@ -69,26 +69,26 @@ const Signup = () => {
           </label>
 
           <label className="label">
-            <span className="label-text text-[16px]">비밀번호 확인</span>
+            <span className="label-text text-base">비밀번호 확인</span>
           </label>
           <input
             type="password"
             placeholder="비밀번호를 한 번 더 입력해 주세요."
             className="input w-full placeholder:text-sm"
-            required
+            // required
           />
           <label className="label pb-0">
             <span className="label-text-alt">Bottom Left label</span>
           </label>
 
           <label className="label">
-            <span className="label-text text-[16px]">닉네임</span>
+            <span className="label-text text-base">닉네임</span>
           </label>
           <input
             type="password"
             placeholder="닉네임을 입력해 주세요."
             className="input w-full placeholder:text-sm"
-            required
+            // required
           />
           <label className="label ">
             <span className="label-text-alt">Bottom Left label</span>

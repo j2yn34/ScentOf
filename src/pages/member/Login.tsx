@@ -1,28 +1,21 @@
 import { Link } from "react-router-dom";
 import { useState, ChangeEvent, FormEvent, useEffect } from "react";
 import { auth } from "../../database/initialize";
-import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import { useSetRecoilState } from "recoil";
+import { isLoggedInState } from "../../state/authState";
 
 const Login = () => {
+  const setIsLoggedIn = useSetRecoilState(isLoggedInState);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const [init, setInit] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   useEffect(() => {
-    if (init) {
-      onAuthStateChanged(auth, (user) => {
-        if (user) {
-          setIsLoggedIn(true);
-          if (!isLoggedIn) {
-          }
-        } else {
-          setIsLoggedIn(false);
-        }
-        setInit(true);
-      });
-    }
-  }, [isLoggedIn, init]);
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setIsLoggedIn(!!user);
+    });
+    return () => unsubscribe();
+  }, [setIsLoggedIn]);
 
   const onChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -37,7 +30,7 @@ const Login = () => {
     event.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      alert("로그인 되었습니다.");
+      alert("안녕하세요! 로그인 되었습니다.");
       setIsLoggedIn(true);
     } catch (error) {
       console.log(error);
