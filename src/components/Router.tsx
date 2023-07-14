@@ -6,6 +6,7 @@ import Review from "../pages/Review";
 import Recommend from "../pages/Recommend";
 import ReviewDetail from "../pages/ReviewDetail";
 import RecommendDetail from "../pages/RecommendDetail";
+import Mypage from "../pages/member/Mypage";
 
 const Router = () => {
   return (
@@ -17,6 +18,7 @@ const Router = () => {
       <Route path="/review/:id" element={<ReviewDetail />} />
       <Route path="/recommend" element={<Recommend />} />
       <Route path="/recommend/:id" element={<RecommendDetail />} />
+      <Route path="/mypage" element={<Mypage />} />
     </Routes>
   );
 };
