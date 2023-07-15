@@ -1,6 +1,13 @@
 import { ChangeEvent, useState, FormEvent, useEffect } from "react";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { getFirestore, collection, addDoc } from "firebase/firestore";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  where,
+  getDocs,
+  query,
+} from "firebase/firestore";
 import { auth } from "../../database/initialize";
 
 const Signup = () => {
@@ -9,19 +16,22 @@ const Signup = () => {
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [nickname, setNickname] = useState("");
 
-  const [passwordMessage, setpasswordMessage] = useState("");
+  const [passwordMessage, setPasswordMessage] = useState("");
   const [passwordConfirmMessage, setPasswordConfirmMessage] = useState("");
+  const [nicknameMessage, setNicknameMessage] = useState("");
 
   const [isPassword, setIsPassword] = useState(false);
   const [isPasswordMatch, setIsPasswordMatch] = useState(false);
+  const [isNickname, setIsNickname] = useState(false);
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
 
   const db = getFirestore();
 
-  const saveNicknameToFirestore = async (nickname: string) => {
+  const saveNicknameToFirestore = async (userId: string, nickname: string) => {
     try {
       const usersRef = collection(db, "users");
       const newDocument = {
+        userId,
         nickname,
       };
       await addDoc(usersRef, newDocument);
@@ -37,9 +47,10 @@ const Signup = () => {
       await createUserWithEmailAndPassword(auth, email, password);
       const user = auth.currentUser;
       if (user) {
+        const userId = user.uid;
         await updateProfile(user, { displayName: nickname });
+        await saveNicknameToFirestore(userId, nickname);
       }
-      await saveNicknameToFirestore(nickname);
       alert("센트오브의 회원이 되신 걸 환영합니다!");
     } catch (error) {
       console.error(error);
@@ -52,21 +63,24 @@ const Signup = () => {
       setEmail(value);
     } else if (name === "password") {
       setPassword(value);
-      checkPasswordStrength(value);
+      checkPasswordValue(value);
     } else if (name === "passwordConfirm") {
       setPasswordConfirm(value);
     } else if (name === "nickname") {
       setNickname(value);
+      checkNicknameValue(value);
     }
   };
 
-  const checkPasswordStrength = (passwordValue: string) => {
+  const checkPasswordValue = (passwordValue: string) => {
     const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,}$/;
     if (!passwordRegex.test(passwordValue)) {
-      setpasswordMessage("숫자+영문+특수문자 조합으로 8자 이상 입력해주세요.");
+      setPasswordMessage(
+        "숫자+영문+특수문자 조합으로 8자리 이상 입력해주세요."
+      );
       setIsPassword(false);
     } else {
-      setpasswordMessage("안전한 비밀번호예요.");
+      setPasswordMessage("안전한 비밀번호예요.");
       setIsPassword(true);
     }
   };
@@ -82,9 +96,32 @@ const Signup = () => {
     }
   }, [passwordConfirm, password]);
 
+  const checkNicknameValue = async (nickname: string) => {
+    try {
+      if (nickname.length < 2 || nickname.length > 5) {
+        setNicknameMessage("닉네임은 2~5자로 설정해 주세요.");
+        setIsNickname(false);
+      } else {
+        const querySnapshot = await getDocs(
+          query(collection(db, "users"), where("nickname", "==", nickname))
+        );
+
+        if (querySnapshot.size > 0) {
+          setNicknameMessage("이미 사용 중인 닉네임이에요.");
+          setIsNickname(false);
+        } else {
+          setNicknameMessage("사용 가능한 닉네임이에요.");
+          setIsNickname(true);
+        }
+      }
+    } catch (error) {
+      console.error("닉네임 중복 확인 중 오류가 발생했습니다:", error);
+    }
+  };
+
   useEffect(() => {
-    setIsSubmitDisabled(!isPasswordMatch || !isPassword);
-  }, [isPasswordMatch, passwordMessage]);
+    setIsSubmitDisabled(!isPasswordMatch || !isPassword || !isNickname);
+  }, [isPasswordMatch, isPassword, isNickname]);
 
   return (
     <div
@@ -116,7 +153,7 @@ const Signup = () => {
           <input
             name="password"
             type="password"
-            placeholder="비밀번호를 입력해 주세요."
+            placeholder="비밀번호를 입력해 주세요. (8자 이상)"
             className="input w-full placeholder:text-sm"
             required
             value={password}
@@ -165,14 +202,20 @@ const Signup = () => {
           <input
             name="nickname"
             type="text"
-            placeholder="닉네임을 입력해 주세요."
+            placeholder="닉네임을 입력해 주세요. (2~5자)"
             className="input w-full placeholder:text-sm"
             required
             value={nickname}
             onChange={onChange}
           />
           <label className="label p-1">
-            <span className="label-text-alt">Bottom Left label</span>
+            <span
+              className={`label-text-alt ${
+                isNickname ? "text-green" : "text-red"
+              }`}
+            >
+              {nicknameMessage}
+            </span>
           </label>
 
           <button
