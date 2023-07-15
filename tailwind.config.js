@@ -17,8 +17,8 @@ export default {
         "brown-500": "#695C4F",
         "brown-600": "#504538",
         brown: "#3B3936",
-        green: "06AC59",
-        red: "FB3535",
+        green: "#06AC59",
+        red: "#FB3535",
       },
       width: {
         "arrowSize-sm": "8px",

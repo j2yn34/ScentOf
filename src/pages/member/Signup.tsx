@@ -1,19 +1,18 @@
-import { ChangeEvent, useState, FormEvent } from "react";
+import { ChangeEvent, useState, FormEvent, useEffect } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../database/initialize";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
 
-  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    if (name === "email") {
-      setEmail(value);
-    } else if (name === "password") {
-      setPassword(value);
-    }
-  };
+  const [passwordMessage, setpasswordMessage] = useState("");
+  const [passwordConfirmMessage, setPasswordConfirmMessage] = useState("");
+
+  const [isPassword, setIsPassword] = useState(false);
+  const [isPasswordMatch, setIsPasswordMatch] = useState(false);
+  const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -21,9 +20,47 @@ const Signup = () => {
       await createUserWithEmailAndPassword(auth, email, password);
       alert("센트오브의 회원이 되신 걸 환영합니다!");
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
+
+  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    if (name === "email") {
+      setEmail(value);
+    } else if (name === "password") {
+      setPassword(value);
+      checkPasswordStrength(value);
+    } else if (name === "passwordConfirm") {
+      setPasswordConfirm(value);
+    }
+  };
+
+  const checkPasswordStrength = (passwordValue: string) => {
+    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,}$/;
+    if (!passwordRegex.test(passwordValue)) {
+      setpasswordMessage("숫자+영문+특수문자 조합으로 8자 이상 입력해주세요.");
+      setIsPassword(false);
+    } else {
+      setpasswordMessage("안전한 비밀번호예요.");
+      setIsPassword(true);
+    }
+  };
+
+  useEffect(() => {
+    if (passwordConfirm.length > 0 || password.length > 0) {
+      setIsPasswordMatch(passwordConfirm === password);
+      setPasswordConfirmMessage(
+        passwordConfirm === password
+          ? "비밀번호가 일치해요."
+          : "비밀번호가 일치하지 않아요."
+      );
+    }
+  }, [passwordConfirm, password]);
+
+  useEffect(() => {
+    setIsSubmitDisabled(!isPasswordMatch || !isPassword);
+  }, [isPasswordMatch, passwordMessage]);
 
   return (
     <div
@@ -62,7 +99,13 @@ const Signup = () => {
             onChange={onChange}
           />
           <label className="label p-1">
-            <span className="label-text-alt">Bottom Left label</span>
+            <span
+              className={`label-text-alt ${
+                passwordMessage.includes("안전한") ? "text-green" : "text-red"
+              }`}
+            >
+              {passwordMessage}
+            </span>
           </label>
 
           <label className="label p-1">
@@ -71,13 +114,25 @@ const Signup = () => {
             </span>
           </label>
           <input
+            name="passwordConfirm"
             type="password"
             placeholder="비밀번호를 한 번 더 입력해 주세요."
             className="input w-full placeholder:text-sm"
-            // required
+            required
+            value={passwordConfirm}
+            onChange={onChange}
           />
+
           <label className="label p-1">
-            <span className="label-text-alt">Bottom Left label</span>
+            {passwordConfirm && (
+              <span
+                className={`label-text-alt ${
+                  isPasswordMatch ? "text-green" : "text-red"
+                }`}
+              >
+                {passwordConfirmMessage}
+              </span>
+            )}
           </label>
 
           <label className="label p-1">
@@ -94,8 +149,13 @@ const Signup = () => {
           </label>
 
           <button
-            className="mt-2 btn bg-brown-500 text-white hover:bg-brown-600 "
+            className={`custom-button mt-2 btn bg-brown-500 text-white hover:bg-brown-600 ${
+              isSubmitDisabled
+                ? "disabled bg-brown border-brown/[0.5] hover:border-brown/[0.5] !text-brown"
+                : ""
+            }`}
             type="submit"
+            disabled={isSubmitDisabled}
           >
             가입하기
           </button>

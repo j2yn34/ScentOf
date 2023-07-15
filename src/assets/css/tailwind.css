@@ -13,9 +13,10 @@
   background-color: #f6f3f0;
 }
 
-.disabled {
+.custom-button.disabled {
   opacity: 0.3;
-  pointer-events: none;
+  pointer-events: auto !important;
+  cursor: not-allowed !important;
 }
 
 .arrow-left-sm {
