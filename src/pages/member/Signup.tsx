@@ -1,11 +1,13 @@
 import { ChangeEvent, useState, FormEvent, useEffect } from "react";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { getFirestore, collection, addDoc } from "firebase/firestore";
 import { auth } from "../../database/initialize";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [nickname, setNickname] = useState("");
 
   const [passwordMessage, setpasswordMessage] = useState("");
   const [passwordConfirmMessage, setPasswordConfirmMessage] = useState("");
@@ -14,10 +16,30 @@ const Signup = () => {
   const [isPasswordMatch, setIsPasswordMatch] = useState(false);
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
 
+  const db = getFirestore();
+
+  const saveNicknameToFirestore = async (nickname: string) => {
+    try {
+      const usersRef = collection(db, "users");
+      const newDocument = {
+        nickname,
+      };
+      await addDoc(usersRef, newDocument);
+      console.log("닉네임이 Firestore에 저장되었습니다.");
+    } catch (error) {
+      console.error("닉네임 저장 중 오류가 발생했습니다:", error);
+    }
+  };
+
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
       await createUserWithEmailAndPassword(auth, email, password);
+      const user = auth.currentUser;
+      if (user) {
+        await updateProfile(user, { displayName: nickname });
+      }
+      await saveNicknameToFirestore(nickname);
       alert("센트오브의 회원이 되신 걸 환영합니다!");
     } catch (error) {
       console.error(error);
@@ -33,6 +55,8 @@ const Signup = () => {
       checkPasswordStrength(value);
     } else if (name === "passwordConfirm") {
       setPasswordConfirm(value);
+    } else if (name === "nickname") {
+      setNickname(value);
     }
   };
 
@@ -139,10 +163,13 @@ const Signup = () => {
             <span className="label-text text-base font-bold">닉네임</span>
           </label>
           <input
-            type="password"
+            name="nickname"
+            type="text"
             placeholder="닉네임을 입력해 주세요."
             className="input w-full placeholder:text-sm"
-            // required
+            required
+            value={nickname}
+            onChange={onChange}
           />
           <label className="label p-1">
             <span className="label-text-alt">Bottom Left label</span>
