@@ -1,4 +1,5 @@
 import { ChangeEvent, useState, FormEvent, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   createUserWithEmailAndPassword,
   fetchSignInMethodsForEmail,
@@ -33,6 +34,7 @@ const Signup = () => {
   const [isNicknameValid, setIsNicknameValid] = useState(false);
 
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
+  const navigate = useNavigate();
 
   const db = getFirestore();
 
@@ -61,6 +63,7 @@ const Signup = () => {
         await saveNicknameToFirestore(userId, nickname);
       }
       alert("센트오브의 회원이 되신 걸 환영합니다!");
+      navigate("/login");
     } catch (error) {
       console.error(error);
     }
@@ -141,6 +144,9 @@ const Signup = () => {
     try {
       if (nickname.length < 2 || nickname.length > 5) {
         setNicknameMessage("닉네임은 2~5자로 설정해 주세요.");
+        setIsNicknameValid(false);
+      } else if (nickname.includes(" ")) {
+        setNicknameMessage("닉네임은 공백 없이 입력해 주세요.");
         setIsNicknameValid(false);
       } else {
         const querySnapshot = await getDocs(
