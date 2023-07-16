@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState, ChangeEvent, FormEvent, useEffect } from "react";
 import { auth } from "../../database/initialize";
 import {
@@ -10,11 +10,22 @@ import {
 } from "firebase/auth";
 import { useSetRecoilState } from "recoil";
 import { isLoggedInState } from "../../state/authState";
+import { validateField } from "../../components/utils/validation";
 
 const Login = () => {
   const setIsLoggedIn = useSetRecoilState(isLoggedInState);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const [emailMessage, setEmailMessage] = useState("");
+  const [passwordMessage, setPasswordMessage] = useState("");
+
+  const [isEmailValid, setIsEmailValid] = useState(false);
+  const [isPasswordValid, setIsPasswordValid] = useState(false);
+
+  const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -23,21 +34,13 @@ const Login = () => {
     return () => unsubscribe();
   }, [setIsLoggedIn]);
 
-  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    if (name === "email") {
-      setEmail(value);
-    } else if (name === "password") {
-      setPassword(value);
-    }
-  };
-
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, email, password);
       alert("안녕하세요! 로그인 되었습니다.");
       setIsLoggedIn(true);
+      navigate("/");
     } catch (error) {
       console.error("로그인 실패:", error);
     }
@@ -50,11 +53,54 @@ const Login = () => {
     try {
       await signOut(auth);
       await signInWithPopup(auth, provider);
+      navigate("/");
       alert("안녕하세요! 구글 로그인 되었습니다.");
     } catch (error) {
       console.error("구글 로그인 실패:", error);
     }
   };
+
+  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    if (name === "email") {
+      setEmail(value);
+      checkEmailValid(value);
+    } else if (name === "password") {
+      setPassword(value);
+      checkPasswordValid(value);
+    }
+  };
+
+  const checkEmailValid = (emailValue: string) => {
+    const emailRegex =
+      /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+
+    validateField(
+      emailValue,
+      emailRegex,
+      "올바른 이메일 형식이에요 : )",
+      "올바른 이메일 형식을 입력해 주세요.",
+      setIsEmailValid,
+      setEmailMessage
+    );
+  };
+
+  const checkPasswordValid = (passwordValue: string) => {
+    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,}$/;
+
+    validateField(
+      passwordValue,
+      passwordRegex,
+      "안전한 비밀번호예요 : )",
+      "숫자+영문+특수문자 조합으로 8자리 이상 입력해주세요.",
+      setIsPasswordValid,
+      setPasswordMessage
+    );
+  };
+
+  useEffect(() => {
+    setIsSubmitDisabled(!isEmailValid || !isPasswordValid);
+  }, [isEmailValid, isPasswordValid]);
 
   return (
     <div
@@ -74,7 +120,13 @@ const Login = () => {
             onChange={onChange}
           />
           <label className="label p-1">
-            <span className="label-text-alt">Bottom Left label</span>
+            <span
+              className={`label-text-alt ${
+                emailMessage.includes(": )") ? "text-green" : "text-red"
+              }`}
+            >
+              {emailMessage}
+            </span>
           </label>
 
           <input
@@ -87,12 +139,23 @@ const Login = () => {
             onChange={onChange}
           />
           <label className="label p-1">
-            <span className="label-text-alt">Bottom Left label</span>
+            <span
+              className={`label-text-alt ${
+                isPasswordValid ? "text-green" : "text-red"
+              }`}
+            >
+              {passwordMessage}
+            </span>
           </label>
 
           <button
-            className="mt-1 btn bg-brown-500 text-white hover:bg-brown-600"
+            className={`custom-button mt-2 btn bg-brown-500 text-white hover:bg-brown-600 ${
+              isSubmitDisabled
+                ? "disabled bg-brown border-brown/[0.5] hover:border-brown/[0.5] !text-brown"
+                : ""
+            }`}
             type="submit"
+            disabled={isSubmitDisabled}
           >
             로그인
           </button>
