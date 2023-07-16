@@ -1,5 +1,9 @@
 import { ChangeEvent, useState, FormEvent, useEffect } from "react";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  fetchSignInMethodsForEmail,
+  updateProfile,
+} from "firebase/auth";
 import {
   getFirestore,
   collection,
@@ -16,13 +20,18 @@ const Signup = () => {
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [nickname, setNickname] = useState("");
 
+  const [emailMessage, setEmailMessage] = useState("");
   const [passwordMessage, setPasswordMessage] = useState("");
   const [passwordConfirmMessage, setPasswordConfirmMessage] = useState("");
   const [nicknameMessage, setNicknameMessage] = useState("");
 
-  const [isPassword, setIsPassword] = useState(false);
+  const [isEmailValid, setIsEmailValid] = useState(false);
+  const [isEmailAvailable, setIsEmailAvailable] = useState(false);
+  const [isEmailAvailableChecked, setIsEmailAvailableChecked] = useState(false);
+  const [isPasswordValid, setIsPasswordValid] = useState(false);
   const [isPasswordMatch, setIsPasswordMatch] = useState(false);
-  const [isNickname, setIsNickname] = useState(false);
+  const [isNicknameValid, setIsNicknameValid] = useState(false);
+
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
 
   const db = getFirestore();
@@ -61,9 +70,11 @@ const Signup = () => {
     const { name, value } = event.target;
     if (name === "email") {
       setEmail(value);
+      checkEmailValid(value);
+      setIsEmailAvailableChecked(false);
     } else if (name === "password") {
       setPassword(value);
-      checkPasswordValue(value);
+      checkPasswordValid(value);
     } else if (name === "passwordConfirm") {
       setPasswordConfirm(value);
     } else if (name === "nickname") {
@@ -72,16 +83,46 @@ const Signup = () => {
     }
   };
 
-  const checkPasswordValue = (passwordValue: string) => {
+  const checkEmailValid = (emailvalue: string) => {
+    if (emailvalue.length > 0) {
+      const emailRegex =
+        /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+      if (!emailRegex.test(emailvalue)) {
+        setEmailMessage("올바른 이메일 형식을 입력해 주세요.");
+        setIsEmailValid(false);
+      } else {
+        setEmailMessage("올바른 이메일 형식이에요.");
+        setIsEmailValid(true);
+      }
+    }
+  };
+
+  const checkEmailAvailability = async () => {
+    try {
+      const signInMethods = await fetchSignInMethodsForEmail(auth, email);
+      if (signInMethods.length === 0) {
+        setEmailMessage("사용 가능한 이메일이에요.");
+        setIsEmailAvailable(true);
+      } else {
+        setEmailMessage("이미 가입된 이메일이에요");
+        setIsEmailAvailable(false);
+      }
+      setIsEmailAvailableChecked(true);
+    } catch (error) {
+      console.error("이메일 중복 확인 중 오류 발생:", error);
+    }
+  };
+
+  const checkPasswordValid = (passwordValue: string) => {
     const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,}$/;
     if (!passwordRegex.test(passwordValue)) {
       setPasswordMessage(
         "숫자+영문+특수문자 조합으로 8자리 이상 입력해주세요."
       );
-      setIsPassword(false);
+      setIsPasswordValid(false);
     } else {
       setPasswordMessage("안전한 비밀번호예요.");
-      setIsPassword(true);
+      setIsPasswordValid(true);
     }
   };
 
@@ -100,7 +141,7 @@ const Signup = () => {
     try {
       if (nickname.length < 2 || nickname.length > 5) {
         setNicknameMessage("닉네임은 2~5자로 설정해 주세요.");
-        setIsNickname(false);
+        setIsNicknameValid(false);
       } else {
         const querySnapshot = await getDocs(
           query(collection(db, "users"), where("nickname", "==", nickname))
@@ -108,20 +149,40 @@ const Signup = () => {
 
         if (querySnapshot.size > 0) {
           setNicknameMessage("이미 사용 중인 닉네임이에요.");
-          setIsNickname(false);
+          setIsNicknameValid(false);
         } else {
           setNicknameMessage("사용 가능한 닉네임이에요.");
-          setIsNickname(true);
+          setIsNicknameValid(true);
         }
       }
     } catch (error) {
-      console.error("닉네임 중복 확인 중 오류가 발생했습니다:", error);
+      console.error("닉네임 중복 확인 중 오류 발생:", error);
     }
   };
 
   useEffect(() => {
-    setIsSubmitDisabled(!isPasswordMatch || !isPassword || !isNickname);
-  }, [isPasswordMatch, isPassword, isNickname]);
+    if (nickname.length > 0) {
+      checkNicknameValue(nickname);
+    }
+  }, [nickname]);
+
+  useEffect(() => {
+    setIsSubmitDisabled(
+      !isEmailValid ||
+        !isEmailAvailable ||
+        !isEmailAvailableChecked ||
+        !isPasswordValid ||
+        !isPasswordMatch ||
+        !isNicknameValid
+    );
+  }, [
+    isEmailValid,
+    isEmailAvailable,
+    isEmailAvailableChecked,
+    isPasswordValid,
+    isPasswordMatch,
+    isNicknameValid,
+  ]);
 
   return (
     <div
@@ -134,17 +195,37 @@ const Signup = () => {
           <label className="label p-1">
             <span className="label-text text-base font-bold">이메일</span>
           </label>
-          <input
-            name="email"
-            type="email"
-            placeholder="이메일을 입력해 주세요."
-            className="input w-full placeholder:text-sm"
-            required
-            value={email}
-            onChange={onChange}
-          />
+          <div className="flex items-center">
+            <input
+              name="email"
+              type="email"
+              placeholder="이메일을 입력해 주세요."
+              className="input w-full placeholder:text-sm"
+              required
+              value={email}
+              onChange={onChange}
+            />
+            <button
+              className={`custom-button ml-2 btn bg-brown-200 text-brown hover:bg-brown-300 cursor-pointer ${
+                !isEmailValid || isEmailAvailableChecked ? "disabled" : ""
+              }`}
+              type="button"
+              onClick={checkEmailAvailability}
+              disabled={!isEmailValid || isEmailAvailableChecked}
+            >
+              중복 확인
+            </button>
+          </div>
           <label className="label p-1">
-            <span className="label-text-alt">Bottom Left label</span>
+            <span
+              className={`label-text-alt ${
+                emailMessage.includes("주세요") || emailMessage.includes("이미")
+                  ? "text-red"
+                  : "text-green"
+              }`}
+            >
+              {emailMessage}
+            </span>
           </label>
 
           <label className="label p-1">
@@ -162,7 +243,7 @@ const Signup = () => {
           <label className="label p-1">
             <span
               className={`label-text-alt ${
-                passwordMessage.includes("안전한") ? "text-green" : "text-red"
+                isPasswordValid ? "text-green" : "text-red"
               }`}
             >
               {passwordMessage}
@@ -211,7 +292,7 @@ const Signup = () => {
           <label className="label p-1">
             <span
               className={`label-text-alt ${
-                isNickname ? "text-green" : "text-red"
+                isNicknameValid ? "text-green" : "text-red"
               }`}
             >
               {nicknameMessage}
