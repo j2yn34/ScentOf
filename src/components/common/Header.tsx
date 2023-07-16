@@ -1,6 +1,10 @@
 import { Link } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import { isLoggedInState } from "../../state/authState";
 
 const Header = () => {
+  const isLoggedIn = useRecoilValue(isLoggedInState);
+
   return (
     <div className="fixed z-10 w-full navbar bg-beige p-0">
       <div className="flex w-full xl:container xl:m-auto">
@@ -77,11 +81,19 @@ const Header = () => {
             <li>
               <a className="search">검색</a>
             </li>
-            <li>
-              <Link to="/login">
-                <a className="login">로그인</a>
-              </Link>
-            </li>
+            {isLoggedIn ? (
+              <li>
+                <Link to="/mypage">
+                  <a>마이페이지</a>
+                </Link>
+              </li>
+            ) : (
+              <li>
+                <Link to="/login">
+                  <a>로그인</a>
+                </Link>
+              </li>
+            )}
           </ul>
         </div>
       </div>
