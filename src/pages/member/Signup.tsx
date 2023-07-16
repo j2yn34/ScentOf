@@ -14,6 +14,7 @@ import {
   query,
 } from "firebase/firestore";
 import { auth } from "../../database/initialize";
+import { validateField } from "../../components/utils/validation";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
@@ -86,28 +87,28 @@ const Signup = () => {
     }
   };
 
-  const checkEmailValid = (emailvalue: string) => {
-    if (emailvalue.length > 0) {
-      const emailRegex =
-        /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
-      if (!emailRegex.test(emailvalue)) {
-        setEmailMessage("올바른 이메일 형식을 입력해 주세요.");
-        setIsEmailValid(false);
-      } else {
-        setEmailMessage("올바른 이메일 형식이에요.");
-        setIsEmailValid(true);
-      }
-    }
+  const checkEmailValid = (emailValue: string) => {
+    const emailRegex =
+      /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+
+    validateField(
+      emailValue,
+      emailRegex,
+      "올바른 이메일 형식이에요 : )",
+      "올바른 이메일 형식을 입력해 주세요.",
+      setIsEmailValid,
+      setEmailMessage
+    );
   };
 
   const checkEmailAvailability = async () => {
     try {
       const signInMethods = await fetchSignInMethodsForEmail(auth, email);
       if (signInMethods.length === 0) {
-        setEmailMessage("사용 가능한 이메일이에요.");
+        setEmailMessage("사용 가능한 이메일이에요 : )");
         setIsEmailAvailable(true);
       } else {
-        setEmailMessage("이미 가입된 이메일이에요");
+        setEmailMessage("이미 가입된 이메일이에요.");
         setIsEmailAvailable(false);
       }
       setIsEmailAvailableChecked(true);
@@ -118,15 +119,15 @@ const Signup = () => {
 
   const checkPasswordValid = (passwordValue: string) => {
     const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,}$/;
-    if (!passwordRegex.test(passwordValue)) {
-      setPasswordMessage(
-        "숫자+영문+특수문자 조합으로 8자리 이상 입력해주세요."
-      );
-      setIsPasswordValid(false);
-    } else {
-      setPasswordMessage("안전한 비밀번호예요.");
-      setIsPasswordValid(true);
-    }
+
+    validateField(
+      passwordValue,
+      passwordRegex,
+      "안전한 비밀번호예요 : )",
+      "숫자+영문+특수문자 조합으로 8자리 이상 입력해주세요.",
+      setIsPasswordValid,
+      setPasswordMessage
+    );
   };
 
   useEffect(() => {
@@ -134,7 +135,7 @@ const Signup = () => {
       setIsPasswordMatch(passwordConfirm === password);
       setPasswordConfirmMessage(
         passwordConfirm === password
-          ? "비밀번호가 일치해요."
+          ? "비밀번호가 일치해요 : )"
           : "비밀번호가 일치하지 않아요."
       );
     }
@@ -157,7 +158,7 @@ const Signup = () => {
           setNicknameMessage("이미 사용 중인 닉네임이에요.");
           setIsNicknameValid(false);
         } else {
-          setNicknameMessage("사용 가능한 닉네임이에요.");
+          setNicknameMessage("사용 가능한 닉네임이에요 : )");
           setIsNicknameValid(true);
         }
       }
@@ -225,9 +226,7 @@ const Signup = () => {
           <label className="label p-1">
             <span
               className={`label-text-alt ${
-                emailMessage.includes("주세요") || emailMessage.includes("이미")
-                  ? "text-red"
-                  : "text-green"
+                emailMessage.includes(": )") ? "text-green" : "text-red"
               }`}
             >
               {emailMessage}
