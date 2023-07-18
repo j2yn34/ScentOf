@@ -14,9 +14,9 @@ const Recommend = (): JSX.Element => {
       <div className="flex items-center justify-between mb-5 lg:mb-8 ">
         <div className="flex items-center">
           <h2 className="text-2xl lg:text-2xl text-left font-bold">
-            추천 질문
+            추천 문의
           </h2>
-          <span className="ml-3.5 text-brown-400">추천해 주세요!</span>
+          <span className="ml-3.5 text-brown-400">추천해 주세요~</span>
         </div>
         <LineButton path={`${isLoggedIn ? "/recommend/write" : "/login"}`}>
           글쓰기

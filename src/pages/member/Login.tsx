@@ -8,7 +8,7 @@ import {
 } from "firebase/auth";
 import { useSetRecoilState } from "recoil";
 import { isLoggedInState } from "../../state/authState";
-import { validateField } from "../../components/utils/validation";
+import { validateField } from "../../utils/validation";
 
 const Login = () => {
   const setIsLoggedIn = useSetRecoilState(isLoggedInState);

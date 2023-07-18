@@ -1,15 +1,16 @@
 import { ChangeEvent, FormEvent, useRef, useState } from "react";
-
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import { modules } from "../quillModules";
 
 const RecommendWrite = () => {
-  const QuillRef = useRef<ReactQuill>();
+  const QuillRef = useRef<ReactQuill | null>(null);
   const [title, setTitle] = useState("");
   const [contents, setContents] = useState("");
 
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    console.log(event);
   };
 
   const onChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -20,14 +21,14 @@ const RecommendWrite = () => {
   return (
     <div className="pt-14 xl:px-32 lg:px-20 md:px-12 sm:px-6 px-4">
       <div className="flex items-center mb-5 lg:mb-8">
-        <h2 className="text-2xl lg:text-2xl text-left font-bold">추천 질문</h2>
+        <h2 className="text-2xl lg:text-2xl text-left font-bold">추천 문의</h2>
         <span className="ml-3.5 text-brown-400">
           추천 받고 싶은 제품이 있나요?
         </span>
       </div>
       <div className="flex flex-col">
         <span className="text-xs text-brown-400 text-right">*필수입력</span>
-        <h4 className="font-bold mb-4">질문*</h4>
+        <h4 className="font-bold mb-4">문의 작성*</h4>
         <form onSubmit={onSubmit}>
           <input
             name="title"
@@ -44,6 +45,7 @@ const RecommendWrite = () => {
               }
             }}
             value={contents}
+            modules={modules}
             onChange={setContents}
             placeholder="추천 받고 싶은 제품이나 향에 대해 작성해 주세요."
             className="w-full bg-beige"

@@ -14,7 +14,7 @@ import {
   query,
 } from "firebase/firestore";
 import { auth } from "../../database/initialize";
-import { validateField } from "../../components/utils/validation";
+import { validateField } from "../../utils/validation";
 
 const Signup = () => {
   const [email, setEmail] = useState("");

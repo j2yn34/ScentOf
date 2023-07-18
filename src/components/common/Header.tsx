@@ -36,7 +36,7 @@ const Header = () => {
             </li>
             <li className="hover:bg-beige">
               <Link to="/recommend">
-                <a className="py-4">추천 질문</a>
+                <a className="py-4">추천 문의</a>
               </Link>
             </li>
           </ul>
@@ -71,7 +71,7 @@ const Header = () => {
             </li>
             <li>
               <Link to="/recommend">
-                <a>추천 질문</a>
+                <a>추천 문의</a>
               </Link>
             </li>
           </ul>

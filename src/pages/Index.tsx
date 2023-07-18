@@ -23,9 +23,9 @@ const Index = () => {
       <div className="pt-16 px-4">
         <div className="flex items-end mb-5 lg:mb-8 ">
           <h2 className="text-2xl lg:text-2xl text-left font-bold">
-            추천 질문
+            추천 문의
           </h2>
-          <span className="ml-3.5 text-brown-400">추천해 주세요!</span>
+          <span className="ml-3.5 text-brown-400">추천해 주세요~</span>
         </div>
         <RecommendPost limit={4} />
         <Link to="/recommend" className="block w-[70px] h-[26px] mx-auto">
