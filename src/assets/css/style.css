@@ -3,3 +3,29 @@
 .main {
   min-height: calc(100vh - 4rem - 81px);
 }
+
+/* quill custom css */
+.ql-container {
+  min-height: 180px;
+  color: #3b3936;
+}
+.ql-editor p {
+  font-size: 0.9375rem !important;
+}
+
+.ql-snow .ql-editor h3 {
+  font-size: 1.05rem !important;
+}
+
+.ql-snow .ql-editor h2 {
+  font-size: 1.25rem !important;
+}
+
+.ql-snow .ql-editor h1 {
+  font-size: 1.375rem !important;
+}
+
+.quill > .ql-container > .ql-editor.ql-blank::before {
+  font-size: 14px;
+  color: #c2a788;
+}
