@@ -3,10 +3,8 @@ import { useState, ChangeEvent, FormEvent, useEffect } from "react";
 import { auth } from "../../database/initialize";
 import {
   signInWithEmailAndPassword,
-  onAuthStateChanged,
   GoogleAuthProvider,
   signInWithPopup,
-  signOut,
 } from "firebase/auth";
 import { useSetRecoilState } from "recoil";
 import { isLoggedInState } from "../../state/authState";
@@ -27,13 +25,6 @@ const Login = () => {
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setIsLoggedIn(!!user);
-    });
-    return () => unsubscribe();
-  }, [setIsLoggedIn]);
-
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
@@ -51,8 +42,8 @@ const Login = () => {
   > = async () => {
     const provider = new GoogleAuthProvider();
     try {
-      await signOut(auth);
       await signInWithPopup(auth, provider);
+      setIsLoggedIn(true);
       navigate("/");
       alert("안녕하세요! 구글 로그인 되었습니다.");
     } catch (error) {
