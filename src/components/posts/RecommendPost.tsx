@@ -31,6 +31,21 @@ const RecommendPost = ({ limit }: { limit: number }): JSX.Element => {
     getRecommendations();
   }, []);
 
+  const getTimeDiff = (timestamp: Timestamp) => {
+    const currentTime = moment();
+    const postedTime = moment(timestamp.toDate());
+    const diffInMinutes = currentTime.diff(postedTime, "minutes");
+    const diffInHours = currentTime.diff(postedTime, "hours");
+
+    if (diffInMinutes < 60) {
+      return `${diffInMinutes}분 전`;
+    } else if (diffInHours < 24) {
+      return `${diffInHours}시간 전`;
+    } else {
+      return postedTime.format("YYYY-MM-DD");
+    }
+  };
+
   return (
     <div className="flex flex-col">
       {recommendDatas.slice(0, limit).map((data) => (
@@ -41,8 +56,12 @@ const RecommendPost = ({ limit }: { limit: number }): JSX.Element => {
         >
           <p className="text-brown-900 md:text-base text-sm">{data.title}</p>
           <div className="flex items-center text-brown-400 md:text-sm text-xs">
-            <span className="px-4">{data.nickname}</span>
-            <span>{moment(data.postedDate.toDate()).format("YYYY-MM-DD")}</span>
+            <span className="md:mx-4 mx-2.5 text-center md:w-[90px] w-[60px]">
+              {data.nickname}
+            </span>
+            <span className="md:w-[80px] w-[64px] text-center">
+              {getTimeDiff(data.postedDate)}
+            </span>
           </div>
         </Link>
       ))}
