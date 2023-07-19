@@ -3,6 +3,7 @@ import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { db } from "../../database/initialize";
 import { useEffect, useState } from "react";
 import { Timestamp } from "firebase/firestore";
+import moment from "moment";
 
 type RecommendData = {
   id: string;
@@ -41,7 +42,7 @@ const RecommendPost = ({ limit }: { limit: number }): JSX.Element => {
           <p className="text-brown-900 md:text-base text-sm">{data.title}</p>
           <div className="flex items-center text-brown-400 md:text-sm text-xs">
             <span className="px-4">{data.nickname}</span>
-            <span>{data.postedDate.toDate().toLocaleString()}</span>
+            <span>{moment(data.postedDate.toDate()).format("YYYY-MM-DD")}</span>
           </div>
         </Link>
       ))}
