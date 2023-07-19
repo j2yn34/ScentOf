@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { db } from "../../database/initialize";
 import { useEffect, useState } from "react";
 import { Timestamp } from "firebase/firestore";
@@ -15,8 +15,11 @@ const RecommendPost = ({ limit }: { limit: number }): JSX.Element => {
   const [recommendDatas, setRecommendDatas] = useState<RecommendData[]>([]);
 
   const getRecommendations = async () => {
-    const dbRecommendations = await getDocs(collection(db, "recommendations"));
-    const dataArr = dbRecommendations.docs.map((doc) => ({
+    const dbRecommendations = collection(db, "recommendations");
+    const result = await getDocs(
+      query(dbRecommendations, orderBy("postedDate", "desc"))
+    );
+    const dataArr = result.docs.map((doc) => ({
       ...doc.data(),
       id: doc.id,
     })) as RecommendData[];

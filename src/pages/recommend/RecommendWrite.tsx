@@ -3,7 +3,7 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { modules } from "../quillModules";
 import { auth, db } from "../../database/initialize";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { collection, addDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 
 const RecommendWrite = () => {
@@ -23,7 +23,7 @@ const RecommendWrite = () => {
           userId: currentUser.uid,
           title: title,
           content: content,
-          postedDate: serverTimestamp(),
+          postedDate: new Date(),
         });
         setTitle("");
         setContent("");
