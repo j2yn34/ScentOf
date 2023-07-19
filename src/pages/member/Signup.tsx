@@ -5,15 +5,8 @@ import {
   fetchSignInMethodsForEmail,
   updateProfile,
 } from "firebase/auth";
-import {
-  getFirestore,
-  collection,
-  addDoc,
-  where,
-  getDocs,
-  query,
-} from "firebase/firestore";
-import { auth } from "../../database/initialize";
+import { collection, addDoc, where, getDocs, query } from "firebase/firestore";
+import { auth, db } from "../../database/initialize";
 import { validateField } from "../../utils/validation";
 
 const Signup = () => {
@@ -36,8 +29,6 @@ const Signup = () => {
 
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
   const navigate = useNavigate();
-
-  const db = getFirestore();
 
   const saveNicknameToFirestore = async (userId: string, nickname: string) => {
     try {
@@ -64,7 +55,7 @@ const Signup = () => {
         await saveNicknameToFirestore(userId, nickname);
       }
       alert("센트오브의 회원이 되신 걸 환영합니다!");
-      navigate("/login");
+      navigate("/");
     } catch (error) {
       console.error(error);
     }
