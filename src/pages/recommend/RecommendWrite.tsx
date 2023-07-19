@@ -2,15 +2,37 @@ import { ChangeEvent, FormEvent, useRef, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { modules } from "../quillModules";
+import { auth, db } from "../../database/initialize";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 
 const RecommendWrite = () => {
   const QuillRef = useRef<ReactQuill | null>(null);
   const [title, setTitle] = useState("");
-  const [contents, setContents] = useState("");
+  const [content, setContent] = useState("");
+  const navigate = useNavigate();
 
-  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(event);
+    try {
+      const currentUser = auth.currentUser;
+
+      if (currentUser) {
+        const docRef = await addDoc(collection(db, "recommendations"), {
+          nickname: currentUser.displayName,
+          userId: currentUser.uid,
+          title: title,
+          content: content,
+          postedDate: serverTimestamp(),
+        });
+        setTitle("");
+        setContent("");
+        navigate("/recommend", { replace: true });
+        console.log("문서 ID:", docRef.id);
+      }
+    } catch (error) {
+      console.error("Firestore 저장 오류:", error);
+    }
   };
 
   const onChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -36,7 +58,7 @@ const RecommendWrite = () => {
             value={title}
             onChange={onChange}
             className="w-full text-base bg-beige mb-4 p-3 placeholder:text-brown-300 placeholder:italic placeholder:text-sm"
-            // required
+            required
           />
           <ReactQuill
             ref={(element: null) => {
@@ -44,12 +66,11 @@ const RecommendWrite = () => {
                 QuillRef.current = element;
               }
             }}
-            value={contents}
+            value={content}
             modules={modules}
-            onChange={setContents}
+            onChange={setContent}
             placeholder="추천 받고 싶은 제품이나 향에 대해 작성해 주세요."
             className="w-full bg-beige"
-            // required
           />
           <div className="flex justify-center">
             <button className="mt-8 btn bg-white text-brown border-brown-300 hover:bg-beige">
