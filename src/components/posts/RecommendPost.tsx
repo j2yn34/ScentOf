@@ -21,15 +21,19 @@ const RecommendPost = ({ limit }: { limit: number }): JSX.Element => {
   const [recommendDatas, setRecommendDatas] = useState<RecommendData[]>([]);
 
   const getRecommendations = async () => {
-    const dbRecommendations = collection(db, "recommendations");
-    const result = await getDocs(
-      query(dbRecommendations, orderBy("postedDate", "desc"))
-    );
-    const dataArr = result.docs.map((doc) => ({
-      ...doc.data(),
-      id: doc.id,
-    })) as RecommendData[];
-    setRecommendDatas(dataArr);
+    try {
+      const dbRecommendations = collection(db, "recommendations");
+      const result = await getDocs(
+        query(dbRecommendations, orderBy("postedDate", "desc"))
+      );
+      const dataArr = result.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      })) as RecommendData[];
+      setRecommendDatas(dataArr);
+    } catch (error) {
+      console.error("리스트를 불러오는 중 오류 발생:", error);
+    }
   };
 
   useEffect(() => {
