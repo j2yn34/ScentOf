@@ -1,9 +1,14 @@
 import { Link } from "react-router-dom";
-import { collection, getDocs, orderBy, query } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  orderBy,
+  query,
+  Timestamp,
+} from "firebase/firestore";
 import { db } from "../../database/initialize";
 import { useEffect, useState } from "react";
-import { Timestamp } from "firebase/firestore";
-import moment from "moment";
+import TimeDiff from "../common/TimeDiff";
 
 type RecommendData = {
   id: string;
@@ -31,21 +36,6 @@ const RecommendPost = ({ limit }: { limit: number }): JSX.Element => {
     getRecommendations();
   }, []);
 
-  const getTimeDiff = (timestamp: Timestamp) => {
-    const currentTime = moment();
-    const postedTime = moment(timestamp.toDate());
-    const diffInMinutes = currentTime.diff(postedTime, "minutes");
-    const diffInHours = currentTime.diff(postedTime, "hours");
-
-    if (diffInMinutes < 60) {
-      return `${diffInMinutes}분 전`;
-    } else if (diffInHours < 24) {
-      return `${diffInHours}시간 전`;
-    } else {
-      return postedTime.format("YYYY-MM-DD");
-    }
-  };
-
   return (
     <div className="flex flex-col">
       {recommendDatas.slice(0, limit).map((data) => (
@@ -60,7 +50,7 @@ const RecommendPost = ({ limit }: { limit: number }): JSX.Element => {
               {data.nickname}
             </span>
             <span className="md:w-[80px] w-[64px] text-center">
-              {getTimeDiff(data.postedDate)}
+              <TimeDiff timestamp={data.postedDate} />
             </span>
           </div>
         </Link>
