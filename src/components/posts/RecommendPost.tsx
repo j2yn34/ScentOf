@@ -49,9 +49,9 @@ const RecommendPost = ({ limit }: { limit: number }): JSX.Element => {
             <span className="md:mx-4 mx-2.5 text-center md:w-[90px] w-[60px]">
               {data.nickname}
             </span>
-            <span className="md:w-[80px] w-[64px] text-center">
+            <div className="md:w-[80px] w-[64px] text-center">
               <TimeDiff timestamp={data.postedDate} />
-            </span>
+            </div>
           </div>
         </Link>
       ))}
