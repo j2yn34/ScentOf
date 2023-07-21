@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import DOMPurify from "dompurify";
+import parse from "html-react-parser";
 import { doc, getDoc, Timestamp } from "firebase/firestore";
 import { db } from "../../database/initialize";
 import LineButton from "../common/buttons/LineButton";
@@ -38,6 +40,8 @@ const DetailView = ({ postId }: { postId: string }) => {
     return <div>로딩중...</div>;
   }
 
+  const safeContent = DOMPurify.sanitize(post.content);
+
   return (
     <div className="mb-6">
       <div className="flex justify-end">
@@ -54,8 +58,8 @@ const DetailView = ({ postId }: { postId: string }) => {
             </div>
           </div>
         </div>
-        <div className="border-y border-brown-400 min-h-[250px] p-4">
-          <div>{post.content}</div>
+        <div className="border-y border-brown-400 min-h-[250px] px-4 py-6 mb-2">
+          {parse(safeContent)}
         </div>
         <LineButton path="/recommend" className="flex text-sm justify-end">
           목록으로
