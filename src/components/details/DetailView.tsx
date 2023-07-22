@@ -4,7 +4,7 @@ import parse from "html-react-parser";
 import { doc, getDoc, Timestamp } from "firebase/firestore";
 import { db } from "../../database/initialize";
 import LineButton from "../common/buttons/LineButton";
-import TimeDiff from "../../components/common/TimeDiff";
+import CustomDateTime from "../common/timeFormat/DateWithTime";
 
 type RecommendData = {
   id: string;
@@ -54,7 +54,7 @@ const DetailView = ({ postId }: { postId: string }) => {
           <div className="flex text-brown-300">
             <span className="mx-4">{post.nickname}</span>
             <div>
-              <TimeDiff timestamp={post.postedDate} />
+              <CustomDateTime timestamp={post.postedDate.toDate()} />
             </div>
           </div>
         </div>

@@ -8,7 +8,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../../database/initialize";
 import { useEffect, useState } from "react";
-import TimeDiff from "../common/TimeDiff";
+import TimeDiff from "../common/timeFormat/TimeDiff";
 
 type RecommendData = {
   id: string;
