@@ -204,7 +204,7 @@ const Signup = () => {
               onChange={onChange}
             />
             <button
-              className={`custom-button ml-2 btn bg-brown-200 text-brown hover:bg-brown-300 cursor-pointer ${
+              className={`custom-btn ml-2 btn secondary-btn ${
                 !isEmailValid || isEmailAvailableChecked ? "disabled" : ""
               }`}
               type="button"
@@ -296,10 +296,8 @@ const Signup = () => {
           </label>
 
           <button
-            className={`custom-button mt-2 btn bg-brown-500 text-white hover:bg-brown-600 ${
-              isSubmitDisabled
-                ? "disabled bg-brown border-brown/[0.5] hover:border-brown/[0.5] !text-brown"
-                : ""
+            className={`custom-button mt-2 btn submit-btn ${
+              isSubmitDisabled ? "disabled" : ""
             }`}
             type="submit"
             disabled={isSubmitDisabled}

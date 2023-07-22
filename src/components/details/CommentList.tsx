@@ -1,6 +1,6 @@
 const CommentList = () => {
   return (
-    <div className="p-4 min-h-[100px] bg-beige border-t border-brown-200">
+    <div className="p-4 pt-3 min-h-[100px] bg-beige border-t border-brown-200">
       <div className="flex justify-between">
         <div className="flex items-center">
           <span className="mr-4 text-brown-500">닉네임</span>
@@ -11,7 +11,7 @@ const CommentList = () => {
           <button className="text-sm ml-4">수정하기</button>
         </div>
       </div>
-      <div className="pt-4 pb-3 text-brown-600">댓글 내용</div>
+      <div className="pt-3 text-brown-600">댓글 내용</div>
     </div>
   );
 };

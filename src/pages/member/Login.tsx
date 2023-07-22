@@ -140,10 +140,8 @@ const Login = () => {
           </label>
 
           <button
-            className={`custom-button mt-2 btn bg-brown-500 text-white hover:bg-brown-600 ${
-              isSubmitDisabled
-                ? "disabled bg-brown border-brown/[0.5] hover:border-brown/[0.5] !text-brown"
-                : ""
+            className={`custom-button mt-2 btn submit-btn ${
+              isSubmitDisabled ? "disabled" : ""
             }`}
             type="submit"
             disabled={isSubmitDisabled}
@@ -194,10 +192,7 @@ const Login = () => {
           <p className="mb-3 text-sm">
             아직 <b>센트오브</b>의 회원이 아니신가요?
           </p>
-          <Link
-            to="/signup"
-            className="btn bg-brown-200 text-brown-900 hover:bg-brown-300/[0.7] w-full"
-          >
+          <Link to="/signup" className="btn secondary-btn w-full">
             이메일 회원가입
           </Link>
         </div>

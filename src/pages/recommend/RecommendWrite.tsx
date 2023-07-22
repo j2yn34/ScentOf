@@ -73,13 +73,8 @@ const RecommendWrite = () => {
             className="w-full bg-beige"
           />
           <div className="flex justify-center">
-            <button className="mt-8 btn bg-white text-brown border-brown-300 hover:bg-beige">
-              취소
-            </button>
-            <button
-              type="submit"
-              className="mt-8 ml-4 btn bg-brown-500 text-white hover:bg-brown-600"
-            >
+            <button className="mt-8 btn cancel-btn">취소</button>
+            <button type="submit" className="mt-8 ml-4 btn submit-btn">
               작성 완료
             </button>
           </div>

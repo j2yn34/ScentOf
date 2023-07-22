@@ -27,7 +27,7 @@
   pointer-events: none;
 }
 
-.custom-button.disabled {
+.custom-btn.disabled {
   opacity: 0.3;
   pointer-events: auto !important;
   cursor: not-allowed !important;
@@ -51,6 +51,17 @@
 .cancel-btn:hover {
   background-color: var(--beige);
   border: 1px solid var(--brown-300);
+}
+
+.secondary-btn {
+  background-color: var(--brown-200);
+  color: var(--brown);
+  border: 1px solid var(--brown-500);
+}
+
+.secondary-btn:hover {
+  background-color: #c2a7889f;
+  border: 1px solid var(--brown-500);
 }
 
 .arrow-left-sm {
