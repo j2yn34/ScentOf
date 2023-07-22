@@ -13,6 +13,11 @@
   background-color: #f6f3f0;
 }
 
+.disabled {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
 .custom-button.disabled {
   opacity: 0.3;
   pointer-events: auto !important;

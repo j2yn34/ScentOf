@@ -43,19 +43,17 @@ const DetailView = ({ postId }: { postId: string }) => {
   const safeContent = DOMPurify.sanitize(post.content);
 
   return (
-    <div className="mb-6">
+    <div className="mb-4">
       <div className="flex justify-end">
-        <button className="flex-end text-sm text-red">삭제하기</button>
-        <button className="flex-end text-sm ml-4">수정하기</button>
+        <button className="text-sm text-red">삭제하기</button>
+        <button className="text-sm ml-4">수정하기</button>
       </div>
       <div className="flex flex-col">
         <div className="flex justify-between mt-3 mb-2">
           <h3 className="text-xl px-2">{post.title}</h3>
           <div className="flex text-brown-300">
             <span className="mx-4">{post.nickname}</span>
-            <div>
-              <CustomDateTime timestamp={post.postedDate.toDate()} />
-            </div>
+            <CustomDateTime timestamp={post.postedDate.toDate()} />
           </div>
         </div>
         <div className="border-y border-brown-400 min-h-[250px] px-4 py-6 mb-2">
