@@ -14,12 +14,17 @@ const ReviewPost = ({ limit }: { limit: number }): JSX.Element => {
           <div>
             <figure className="rounded md:shrink-0 mb-2">
               <img
-                className="rounded w-[126px] h-[140px]"
+                className="rounded w-[120px] h-[140px]"
                 src={review.imageUrl}
                 alt="이미지"
               />
             </figure>
-            <Rating rating={review.rating} />
+            <Rating
+              rating={review.rating}
+              readOnly={true}
+              ratingTextVisible={false}
+              setRating={() => void {}}
+            />
           </div>
           <div className="card-body p-0 pl-3.5 gap-0">
             <span className="text-sm text-brown-300">{review.brandName}</span>
