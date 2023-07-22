@@ -63,7 +63,7 @@ const ReviewWrite = () => {
       <div className="flex items-center mb-5 lg:mb-8">
         <h2 className="text-2xl lg:text-2xl text-left font-bold">향기 리뷰</h2>
         <span className="ml-3.5 text-brown-400">
-          향을 오래 기억할 수 있도록 기록해 보세요.
+          향을 오래 기억할 수 있도록 기록해 볼까요?
         </span>
       </div>
       <div className="flex flex-col">
@@ -96,6 +96,19 @@ const ReviewWrite = () => {
               <h4 className="font-bold mb-4">별점*</h4>
               <Rating rating={rating} setRating={handleRatingChange} />
             </div>
+          </div>
+          <div className="mb-6">
+            <div className="flex items-center mb-4">
+              <h4 className="font-bold mr-3 min-w-[70px]">제품 이미지</h4>
+              <span className="text-sm text-brown-400">
+                제품의 이미지를 함께 기록해 보세요.
+              </span>
+            </div>
+            <input
+              type="file"
+              accept="image/*"
+              className="file:text-sm bg-beige border-none rounded-none h-[44px] w-full max-w-[418px]"
+            />
           </div>
           <h4 className="font-bold mb-4">리뷰 작성*</h4>
           <input
