@@ -1,6 +1,7 @@
-import DetailView from "../../components/details/DetailView";
-import Comment from "../../components/details/Comment";
 import { useParams } from "react-router-dom";
+import DetailView from "../../components/details/DetailView";
+import CommentList from "../../components/details/CommentList";
+import CommentInput from "../../components/details/CommentInput";
 
 const RecommendDetail = () => {
   const { postId } = useParams<{ postId?: string }>();
@@ -15,7 +16,11 @@ const RecommendDetail = () => {
         추천 문의
       </h2>
       <DetailView postId={postId} />
-      <Comment />
+      <>
+        <h4 className="mb-4">댓글</h4>
+        <CommentList />
+        <CommentInput />
+      </>
     </div>
   );
 };
