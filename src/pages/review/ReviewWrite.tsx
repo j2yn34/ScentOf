@@ -2,10 +2,12 @@ import { ChangeEvent, FormEvent, useRef, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { modules } from "../quillModules";
-import { auth, db } from "../../database/initialize";
+import { auth, db, storage } from "../../database/initialize";
 import { collection, addDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import Rating from "../../components/common/Rating";
+import { ref, uploadString } from "firebase/storage";
+import { v4 as uuidv4 } from "uuid";
 
 const ReviewWrite = () => {
   const QuillRef = useRef<ReactQuill | null>(null);
@@ -24,6 +26,23 @@ const ReviewWrite = () => {
       const currentUser = auth.currentUser;
 
       if (currentUser) {
+        let imageUrl = "";
+
+        if (attachment) {
+          const storageRef = ref(
+            storage,
+            `reviewImages/${currentUser.uid}/${uuidv4()}`
+          );
+          const response = await uploadString(
+            storageRef,
+            attachment,
+            "data_url"
+          );
+          console.log(response);
+          const attachmentUrl = response.ref.fullPath;
+          imageUrl = attachmentUrl;
+        }
+
         const docRef = await addDoc(collection(db, "reviews"), {
           userId: currentUser.uid,
           nickname: currentUser.displayName,
@@ -33,12 +52,15 @@ const ReviewWrite = () => {
           content: content,
           rating: rating,
           postedDate: new Date(),
+          imageUrl,
         });
+
         setBrandName("");
         setProductName("");
         setTitle("");
         setContent("");
         setRating(0);
+        setAttachment("");
         navigate("/review", { replace: true });
         console.log("문서 ID:", docRef.id);
       }
