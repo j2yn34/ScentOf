@@ -13,8 +13,9 @@ const ReviewWrite = () => {
   const [productName, setProductName] = useState("");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-
   const [rating, setRating] = useState(0);
+  const [attachment, setAttachment] = useState<string | undefined>(undefined);
+
   const navigate = useNavigate();
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -33,8 +34,11 @@ const ReviewWrite = () => {
           rating: rating,
           postedDate: new Date(),
         });
+        setBrandName("");
+        setProductName("");
         setTitle("");
         setContent("");
+        setRating(0);
         navigate("/review", { replace: true });
         console.log("문서 ID:", docRef.id);
       }
@@ -56,6 +60,21 @@ const ReviewWrite = () => {
 
   const handleRatingChange = (selectedRating: number) => {
     setRating(selectedRating);
+  };
+
+  const onFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const theFile = event.target.files?.[0] || null;
+
+    if (theFile) {
+      const reader: FileReader = new FileReader();
+      reader.onloadend = (finishedEvent: ProgressEvent<FileReader>) => {
+        const { result } = finishedEvent.target as FileReader;
+        if (result && typeof result === "string") {
+          setAttachment(result);
+        }
+      };
+      reader.readAsDataURL(theFile);
+    }
   };
 
   return (
@@ -97,40 +116,48 @@ const ReviewWrite = () => {
               <Rating rating={rating} setRating={handleRatingChange} />
             </div>
           </div>
-          <div className="mb-6">
-            <div className="flex items-center mb-4">
-              <h4 className="font-bold mr-3 min-w-[70px]">제품 이미지</h4>
-              <span className="text-sm text-brown-400">
-                제품의 이미지를 함께 기록해 보세요.
-              </span>
+          <div className="mb-6 flex flex-wrap">
+            <div className="flex flex-col mr-6">
+              <div className="flex items-center mb-4">
+                <h4 className="font-bold mr-3 min-w-[70px]">제품 이미지</h4>
+                <span className="text-sm text-brown-400">
+                  제품의 이미지도 함께 기록해 보세요.
+                </span>
+              </div>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={onFileChange}
+                className="file:text-sm bg-beige border-none rounded-none h-[44px] w-full min-w-[418px]"
+              />
             </div>
+            {attachment && (
+              <img src={attachment} className="w-[84px] h-[84px]" />
+            )}
+          </div>
+          <div>
+            <h4 className="font-bold mb-4">리뷰 작성*</h4>
             <input
-              type="file"
-              accept="image/*"
-              className="file:text-sm bg-beige border-none rounded-none h-[44px] w-full max-w-[418px]"
+              name="title"
+              placeholder="(제목) 한 줄 평을 입력해 주세요."
+              value={title}
+              onChange={onChange}
+              className="w-full text-base bg-beige mb-4 p-2.5 placeholder:text-brown-300 placeholder:italic placeholder:text-sm"
+              required
+            />
+            <ReactQuill
+              ref={(element: null) => {
+                if (element !== null) {
+                  QuillRef.current = element;
+                }
+              }}
+              value={content}
+              modules={modules}
+              onChange={setContent}
+              placeholder="향에 대한 생각을 자유롭게 작성해 주세요."
+              className="w-full bg-beige"
             />
           </div>
-          <h4 className="font-bold mb-4">리뷰 작성*</h4>
-          <input
-            name="title"
-            placeholder="(제목) 한 줄 평을 입력해 주세요."
-            value={title}
-            onChange={onChange}
-            className="w-full text-base bg-beige mb-4 p-2.5 placeholder:text-brown-300 placeholder:italic placeholder:text-sm"
-            required
-          />
-          <ReactQuill
-            ref={(element: null) => {
-              if (element !== null) {
-                QuillRef.current = element;
-              }
-            }}
-            value={content}
-            modules={modules}
-            onChange={setContent}
-            placeholder="향에 대한 생각을 자유롭게 작성해 주세요."
-            className="w-full bg-beige"
-          />
           <div className="flex justify-center">
             <button className="mt-8 btn cancel-btn">취소</button>
             <button type="submit" className="mt-8 ml-4 btn submit-btn">
