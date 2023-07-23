@@ -77,6 +77,16 @@ const ReviewWrite = () => {
     }
   };
 
+  const inputFileRef = useRef<HTMLInputElement | null>(null);
+
+  const onClearAttachment = () => {
+    setAttachment(undefined);
+
+    if (inputFileRef.current) {
+      inputFileRef.current.value = "";
+    }
+  };
+
   return (
     <div className="pt-14 xl:px-32 lg:px-20 md:px-12 sm:px-6 px-4">
       <div className="flex items-center mb-5 lg:mb-8">
@@ -125,6 +135,7 @@ const ReviewWrite = () => {
                 </span>
               </div>
               <input
+                ref={inputFileRef}
                 type="file"
                 accept="image/*"
                 onChange={onFileChange}
@@ -132,7 +143,15 @@ const ReviewWrite = () => {
               />
             </div>
             {attachment && (
-              <img src={attachment} className="w-[84px] h-[84px]" />
+              <div className="flex items-end">
+                <img src={attachment} className="w-[84px] h-[84px]" />
+                <button
+                  onClick={onClearAttachment}
+                  className="ml-4 text-sm text-brown-400 hover:text-red underline underline-offset-4"
+                >
+                  첨부 취소
+                </button>
+              </div>
             )}
           </div>
           <div>
