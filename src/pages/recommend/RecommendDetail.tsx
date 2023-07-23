@@ -19,7 +19,7 @@ const RecommendDetail = () => {
       <>
         <h4 className="mb-4">댓글</h4>
         <CommentList />
-        <CommentInput />
+        <CommentInput postId={postId} />
       </>
     </div>
   );
