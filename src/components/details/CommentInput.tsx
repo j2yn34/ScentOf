@@ -12,15 +12,14 @@ const CommentInput: React.FC<CommentInputProps> = ({ postId }) => {
   const isLoggedIn = useRecoilValue(isLoggedInState);
   const [comment, setComment] = useState("");
 
+  const currentUser = auth.currentUser;
+
   const onChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setComment(event.target.value);
   };
-
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      const currentUser = auth.currentUser;
-
       if (currentUser) {
         const docRef = await addDoc(collection(db, "comments"), {
           postId: postId,
@@ -41,7 +40,9 @@ const CommentInput: React.FC<CommentInputProps> = ({ postId }) => {
 
   return (
     <div className="mt-12 p-4 pb-2 min-h-[130px] bg-beige rounded-lg">
-      <div className="text-brown-500">닉네임</div>
+      {currentUser && (
+        <div className="text-brown-500">{currentUser.displayName}</div>
+      )}
       <form className="flex flex-col" onSubmit={onSubmit}>
         <textarea
           className="my-2 p-2 w-full bg-beige placeholder:text-brown-300 placeholder:italic"
