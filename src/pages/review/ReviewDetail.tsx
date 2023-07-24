@@ -15,7 +15,7 @@ const ReviewDetail = () => {
       <h2 className="text-2xl lg:text-2xl text-left font-bold mb-4 lg:mb-6">
         향기 리뷰
       </h2>
-      <DetailView postId={postId} postType="review" />
+      <DetailView postId={postId} postType="reviews" />
       <>
         <h4 className="mb-4 font-bold">댓글</h4>
         <CommentList postId={postId} />

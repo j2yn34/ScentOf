@@ -38,7 +38,7 @@ const ReviewPost = ({ limit }: { limit: number }): JSX.Element => {
     getreviews();
   }, []);
 
-  const defaultImageUrl = "src/assets/defaultImage.jpg";
+  const defaultImage = "src/assets/defaultImage.jpg";
 
   return (
     <div className="grid grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
@@ -52,7 +52,7 @@ const ReviewPost = ({ limit }: { limit: number }): JSX.Element => {
             <figure className="rounded md:shrink-0 mb-2 mr-3.5">
               <img
                 className="rounded w-[120px] h-[140px]"
-                src={review.imageUrl || defaultImageUrl}
+                src={review.imageUrl || defaultImage}
                 alt={review.imageUrl ? "이미지" : "기본 이미지"}
               />
             </figure>

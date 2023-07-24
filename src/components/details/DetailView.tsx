@@ -5,8 +5,9 @@ import { doc, getDoc, Timestamp } from "firebase/firestore";
 import { db } from "../../database/initialize";
 import LineButton from "../common/buttons/LineButton";
 import CustomDateTime from "../common/timeFormat/DateWithTime";
+import Rating from "../common/Rating";
 
-type PostType = "recommend" | "review";
+type PostType = "recommend" | "reviews";
 
 type PostData = {
   id: string;
@@ -14,6 +15,10 @@ type PostData = {
   postedDate: Timestamp;
   title: string;
   content: string;
+  brandName: string;
+  productName: string;
+  imageUrl: string;
+  rating: number;
 };
 
 type DetailViewProps = {
@@ -50,6 +55,7 @@ const DetailView = ({ postId, postType }: DetailViewProps) => {
   }
 
   const safeContent = DOMPurify.sanitize(post.content);
+  const defaultImage = "/src/assets/defaultImage.jpg";
 
   return (
     <div className="mb-4">
@@ -57,6 +63,31 @@ const DetailView = ({ postId, postType }: DetailViewProps) => {
         <button className="text-sm text-red">삭제하기</button>
         <button className="text-sm ml-4">수정하기</button>
       </div>
+      {postType === "reviews" && (
+        <div className="pb-3 p-2">
+          <div className="flex flex-auto">
+            <figure className="rounded md:shrink-0 mr-4">
+              <img
+                className="rounded w-[120px] h-[140px]"
+                src={post.imageUrl || defaultImage}
+                alt={post.imageUrl ? "이미지" : "기본 이미지"}
+              />
+            </figure>
+            <div className="card-body p-0 gap-0">
+              <span className="text-sm text-brown-300">{post.brandName}</span>
+              <h2 className="card-title py-1 text-brown-900">
+                {post.productName}
+              </h2>
+              <Rating
+                rating={post.rating}
+                readOnly={true}
+                ratingTextVisible={true}
+                setRating={() => void {}}
+              />
+            </div>
+          </div>
+        </div>
+      )}
       <div className="flex flex-col">
         <div className="flex justify-between mt-3 mb-2">
           <h3 className="text-xl px-2">{post.title}</h3>
