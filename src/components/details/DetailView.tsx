@@ -6,7 +6,9 @@ import { db } from "../../database/initialize";
 import LineButton from "../common/buttons/LineButton";
 import CustomDateTime from "../common/timeFormat/DateWithTime";
 
-type RecommendData = {
+type PostType = "recommend" | "review";
+
+type PostData = {
   id: string;
   nickname: string;
   postedDate: Timestamp;
@@ -14,16 +16,23 @@ type RecommendData = {
   content: string;
 };
 
-const DetailView = ({ postId }: { postId: string }) => {
-  const [post, setPost] = useState<RecommendData | null>(null);
+type DetailViewProps = {
+  postId: string;
+  postType: PostType;
+};
 
-  const getRecommendData = async () => {
+const DetailView = ({ postId, postType }: DetailViewProps) => {
+  const [post, setPost] = useState<PostData | null>(null);
+
+  const getPostData = async () => {
     try {
-      const docRef = doc(db, "recommendations", postId);
+      const collectionName =
+        postType === "recommend" ? "recommendations" : "reviews";
+      const docRef = doc(db, collectionName, postId);
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
-        setPost({ ...docSnap.data(), id: docSnap.id } as RecommendData);
+        setPost({ ...docSnap.data(), id: docSnap.id } as PostData);
       } else {
         console.log("문서가 존재하지 않습니다.");
       }
@@ -33,8 +42,8 @@ const DetailView = ({ postId }: { postId: string }) => {
   };
 
   useEffect(() => {
-    getRecommendData();
-  }, [postId]);
+    getPostData();
+  }, [postId, postType]);
 
   if (!post) {
     return <div>로딩중...</div>;
