@@ -64,7 +64,6 @@ const CommentList: React.FC<CommentListProps> = ({ postId }) => {
 
   const onDeleteClick = (comment: CommentData) => async () => {
     const ok = confirm("댓글을 삭제할까요?");
-    console.log(ok);
     if (ok) {
       await deleteDoc(doc(db, "comments", comment.id));
     }

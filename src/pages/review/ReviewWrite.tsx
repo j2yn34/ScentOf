@@ -196,14 +196,14 @@ const ReviewWrite = () => {
           </div>
           <div className="flex justify-center">
             <button
-              className="mt-8 btn cancel-btn"
+              className="mt-8 btn white-btn"
               onClick={() => {
                 navigate(-1);
               }}
             >
               취소
             </button>
-            <button type="submit" className="mt-8 ml-4 btn submit-btn">
+            <button type="submit" className="mt-8 ml-4 btn primary-btn">
               작성 완료
             </button>
           </div>

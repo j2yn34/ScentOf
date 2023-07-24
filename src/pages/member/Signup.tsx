@@ -296,7 +296,7 @@ const Signup = () => {
           </label>
 
           <button
-            className={`custom-button mt-2 btn submit-btn ${
+            className={`custom-button mt-2 btn primary-btn ${
               isSubmitDisabled ? "disabled" : ""
             }`}
             type="submit"

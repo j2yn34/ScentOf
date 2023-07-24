@@ -54,7 +54,7 @@ const CommentInput: React.FC<CommentInputProps> = ({ postId }) => {
           disabled={!isLoggedIn}
         />
         <div className="flex justify-end">
-          <button type="submit" className="btn btn-sm submit-btn">
+          <button type="submit" className="btn btn-sm primary-btn">
             등록
           </button>
         </div>
