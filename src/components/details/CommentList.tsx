@@ -1,18 +1,66 @@
+import { useEffect, useState } from "react";
+import { Timestamp, collection, onSnapshot } from "firebase/firestore";
+import { db } from "../../database/initialize";
+import CustomDateTime from "../common/timeFormat/DateWithTime";
+
+type CommentData = {
+  id: string;
+  postId: string;
+  content: string;
+  nickname: string;
+  userId: string;
+  createdDate: Timestamp;
+};
+
 const CommentList = () => {
+  const [commentsDatas, setCommentsDatas] = useState<CommentData[]>([]);
+
+  const fetchComments = async () => {
+    try {
+      const commentsRef = collection(db, "comments");
+
+      onSnapshot(commentsRef, (querySnapshot) => {
+        const data: CommentData[] = [];
+
+        querySnapshot.forEach((doc) => {
+          data.push({ ...doc.data(), id: doc.id } as CommentData);
+        });
+        setCommentsDatas(data);
+      });
+    } catch (error) {
+      console.error("댓글 불러오는 중 오류 발생: ", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchComments();
+  }, []);
+
   return (
-    <div className="p-4 pt-3 min-h-[100px] bg-beige border-t border-brown-200">
-      <div className="flex justify-between">
-        <div className="flex items-center">
-          <span className="mr-4 text-brown-500">닉네임</span>
-          <span className="text-brown-500 text-sm">날짜</span>
+    <>
+      {commentsDatas.map((comment) => (
+        <div
+          key={comment.id}
+          className="px-4 py-3 min-h-[100px] bg-beige border-t border-brown-200"
+        >
+          <div className="mb-4">
+            <div className="flex justify-between">
+              <div className="flex items-center">
+                <span className="mr-4 text-brown-500">{comment.nickname}</span>
+                <div className="text-brown-400 text-sm">
+                  <CustomDateTime timestamp={comment.createdDate.toDate()} />
+                </div>
+              </div>
+              <div className="flex">
+                <button className="text-sm text-red">삭제하기</button>
+                <button className="text-sm ml-4">수정하기</button>
+              </div>
+            </div>
+            <div className="pt-3 text-brown-600">{comment.content}</div>
+          </div>
         </div>
-        <div className="flex">
-          <button className="text-sm text-red">삭제하기</button>
-          <button className="text-sm ml-4">수정하기</button>
-        </div>
-      </div>
-      <div className="pt-3 text-brown-600">댓글 내용</div>
-    </div>
+      ))}
+    </>
   );
 };
 
