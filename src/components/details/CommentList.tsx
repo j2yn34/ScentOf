@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import {
   Timestamp,
   collection,
+  deleteDoc,
+  doc,
   onSnapshot,
   orderBy,
   query,
@@ -53,6 +55,14 @@ const CommentList: React.FC<CommentListProps> = ({ postId }) => {
     getComments();
   }, [postId]);
 
+  const onDeleteClick = (comment: CommentData) => async () => {
+    const ok = confirm("댓글을 삭제할까요?");
+    console.log(ok);
+    if (ok) {
+      await deleteDoc(doc(db, "comments", comment.id));
+    }
+  };
+
   return (
     <>
       {commentsDatas.map((comment) => (
@@ -70,7 +80,12 @@ const CommentList: React.FC<CommentListProps> = ({ postId }) => {
               </div>
               {currentUser && currentUser.uid === comment.userId && (
                 <div className="flex">
-                  <button className="text-sm text-red">삭제하기</button>
+                  <button
+                    onClick={onDeleteClick(comment)}
+                    className="text-sm text-red"
+                  >
+                    삭제하기
+                  </button>
                   <button className="text-sm ml-4">수정하기</button>
                 </div>
               )}
