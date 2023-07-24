@@ -17,8 +17,8 @@ const RecommendDetail = () => {
       </h2>
       <DetailView postId={postId} />
       <>
-        <h4 className="mb-4">댓글</h4>
-        <CommentList />
+        <h4 className="mb-4 font-bold">댓글</h4>
+        <CommentList postId={postId} />
         <CommentInput postId={postId} />
       </>
     </div>

@@ -56,7 +56,7 @@ const DetailView = ({ postId }: { postId: string }) => {
             <CustomDateTime timestamp={post.postedDate.toDate()} />
           </div>
         </div>
-        <div className="border-y border-brown-400 min-h-[250px] px-4 py-6 mb-2">
+        <div className="border-y border-brown-400 min-h-[250px] px-4 py-6 mb-3">
           {parse(safeContent)}
         </div>
         <LineButton path="/recommend" className="flex text-sm justify-end">

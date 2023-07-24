@@ -1,5 +1,12 @@
 import { useEffect, useState } from "react";
-import { Timestamp, collection, onSnapshot } from "firebase/firestore";
+import {
+  Timestamp,
+  collection,
+  onSnapshot,
+  orderBy,
+  query,
+  where,
+} from "firebase/firestore";
 import { db } from "../../database/initialize";
 import CustomDateTime from "../common/timeFormat/DateWithTime";
 
@@ -12,14 +19,23 @@ type CommentData = {
   createdDate: Timestamp;
 };
 
-const CommentList = () => {
+interface CommentListProps {
+  postId: string;
+}
+
+const CommentList: React.FC<CommentListProps> = ({ postId }) => {
   const [commentsDatas, setCommentsDatas] = useState<CommentData[]>([]);
 
-  const fetchComments = async () => {
+  const getComments = async () => {
     try {
       const commentsRef = collection(db, "comments");
+      const commentsQuery = query(
+        commentsRef,
+        where("postId", "==", postId),
+        orderBy("createdDate", "asc")
+      );
 
-      onSnapshot(commentsRef, (querySnapshot) => {
+      onSnapshot(commentsQuery, (querySnapshot) => {
         const data: CommentData[] = [];
 
         querySnapshot.forEach((doc) => {
@@ -33,8 +49,8 @@ const CommentList = () => {
   };
 
   useEffect(() => {
-    fetchComments();
-  }, []);
+    getComments();
+  }, [postId]);
 
   return (
     <>

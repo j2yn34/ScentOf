@@ -30,7 +30,6 @@ const CommentInput: React.FC<CommentInputProps> = ({ postId }) => {
           createdDate: new Date(),
         });
         setComment("");
-        location.reload();
         console.log("댓글 id: ", docRef.id);
       } else {
         alert("로그인 후 이용해 주세요.");
