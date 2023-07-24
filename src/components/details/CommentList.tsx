@@ -7,7 +7,7 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import { db } from "../../database/initialize";
+import { db, auth } from "../../database/initialize";
 import CustomDateTime from "../common/timeFormat/DateWithTime";
 
 type CommentData = {
@@ -25,6 +25,7 @@ interface CommentListProps {
 
 const CommentList: React.FC<CommentListProps> = ({ postId }) => {
   const [commentsDatas, setCommentsDatas] = useState<CommentData[]>([]);
+  const currentUser = auth.currentUser;
 
   const getComments = async () => {
     try {
@@ -67,10 +68,12 @@ const CommentList: React.FC<CommentListProps> = ({ postId }) => {
                   <CustomDateTime timestamp={comment.createdDate.toDate()} />
                 </div>
               </div>
-              <div className="flex">
-                <button className="text-sm text-red">삭제하기</button>
-                <button className="text-sm ml-4">수정하기</button>
-              </div>
+              {currentUser && currentUser.uid === comment.userId && (
+                <div className="flex">
+                  <button className="text-sm text-red">삭제하기</button>
+                  <button className="text-sm ml-4">수정하기</button>
+                </div>
+              )}
             </div>
             <div className="pt-3 text-brown-600">{comment.content}</div>
           </div>
