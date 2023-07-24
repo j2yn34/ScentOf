@@ -55,12 +55,6 @@ const ReviewWrite = () => {
           imageUrl,
         });
 
-        setBrandName("");
-        setProductName("");
-        setTitle("");
-        setContent("");
-        setRating(0);
-        setAttachment("");
         navigate("/review", { replace: true });
         console.log("문서 ID:", docRef.id);
       }
@@ -89,13 +83,14 @@ const ReviewWrite = () => {
 
     if (theFile) {
       const reader: FileReader = new FileReader();
+      reader.readAsDataURL(theFile);
+
       reader.onloadend = (finishedEvent: ProgressEvent<FileReader>) => {
         const { result } = finishedEvent.target as FileReader;
         if (result && typeof result === "string") {
           setAttachment(result);
         }
       };
-      reader.readAsDataURL(theFile);
     }
   };
 
