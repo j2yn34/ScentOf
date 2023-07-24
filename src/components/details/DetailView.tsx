@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import DOMPurify from "dompurify";
 import parse from "html-react-parser";
-import { doc, getDoc, Timestamp } from "firebase/firestore";
-import { db } from "../../database/initialize";
+import { deleteDoc, doc, getDoc, Timestamp } from "firebase/firestore";
+import { auth, db } from "../../database/initialize";
+import { useNavigate } from "react-router-dom";
 import LineButton from "../common/buttons/LineButton";
 import CustomDateTime from "../common/timeFormat/DateWithTime";
 import Rating from "../common/Rating";
@@ -11,6 +12,7 @@ type PostType = "recommend" | "reviews";
 
 type PostData = {
   id: string;
+  userId: string;
   nickname: string;
   postedDate: Timestamp;
   title: string;
@@ -28,11 +30,13 @@ type DetailViewProps = {
 
 const DetailView = ({ postId, postType }: DetailViewProps) => {
   const [post, setPost] = useState<PostData | null>(null);
+  const navigate = useNavigate();
+
+  const collectionName =
+    postType === "recommend" ? "recommendations" : "reviews";
 
   const getPostData = async () => {
     try {
-      const collectionName =
-        postType === "recommend" ? "recommendations" : "reviews";
       const docRef = doc(db, collectionName, postId);
       const docSnap = await getDoc(docRef);
 
@@ -54,15 +58,28 @@ const DetailView = ({ postId, postType }: DetailViewProps) => {
     return <div>로딩중...</div>;
   }
 
+  const currentUser = auth.currentUser;
   const safeContent = DOMPurify.sanitize(post.content);
   const defaultImage = "/src/assets/defaultImage.jpg";
 
+  const onDeleteClick = (post: PostData) => async () => {
+    const ok = confirm("게시글을 삭제할까요?");
+    if (ok) {
+      await deleteDoc(doc(db, collectionName, post.id));
+      navigate("/review");
+    }
+  };
+
   return (
     <div className="mb-4">
-      <div className="flex justify-end">
-        <button className="text-sm text-red">삭제하기</button>
-        <button className="text-sm ml-4">수정하기</button>
-      </div>
+      {currentUser && currentUser.uid === post.userId && (
+        <div className="flex justify-end">
+          <button onClick={onDeleteClick(post)} className="text-sm text-red">
+            삭제하기
+          </button>
+          <button className="text-sm ml-4">수정하기</button>
+        </div>
+      )}
       {postType === "reviews" && (
         <div className="pb-3 p-2">
           <div className="flex flex-auto">
