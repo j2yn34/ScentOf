@@ -6,6 +6,7 @@ import Rating from "../common/Rating";
 
 type reviewData = {
   id: string;
+  userId: string;
   nickname: string;
   brandName: string;
   productName: string;
@@ -15,7 +16,13 @@ type reviewData = {
   imageUrl?: string;
 };
 
-const ReviewPost = ({ limit }: { limit: number }): JSX.Element => {
+const UserReviewPost = ({
+  limit,
+  userId,
+}: {
+  limit: number;
+  userId: string;
+}): JSX.Element => {
   const [reviewDatas, setReviewDatas] = useState<reviewData[]>([]);
 
   const getreviews = async () => {
@@ -28,7 +35,8 @@ const ReviewPost = ({ limit }: { limit: number }): JSX.Element => {
         ...doc.data(),
         id: doc.id,
       })) as reviewData[];
-      setReviewDatas(dataArr);
+      const userReviewPosts = dataArr.filter((post) => post.userId === userId);
+      setReviewDatas(userReviewPosts);
     } catch (error) {
       console.error("리스트를 불러오는 중 오류 발생:", error);
     }
@@ -81,4 +89,4 @@ const ReviewPost = ({ limit }: { limit: number }): JSX.Element => {
   );
 };
 
-export default ReviewPost;
+export default UserReviewPost;
