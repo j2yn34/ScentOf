@@ -9,6 +9,7 @@ import RecommendDetail from "../pages/recommend/RecommendDetail";
 import ReviewWrite from "../pages/review/ReviewWrite";
 import RecommendWrite from "../pages/recommend/RecommendWrite";
 import Mypage from "../pages/member/Mypage";
+import SearchPage from "../pages/SearchPage";
 
 const Router = () => {
   return (
@@ -23,6 +24,7 @@ const Router = () => {
       <Route path="/recommend/:postId" element={<RecommendDetail />} />
       <Route path="/recommend/write" element={<RecommendWrite />} />
       <Route path="/mypage" element={<Mypage />} />
+      <Route path="/search" element={<SearchPage />} />
     </Routes>
   );
 };

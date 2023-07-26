@@ -31,12 +31,12 @@ const Header = () => {
           >
             <li className="hover:bg-beige">
               <Link to="/review">
-                <a className="py-4">향기 리뷰</a>
+                <span className="py-4">향기 리뷰</span>
               </Link>
             </li>
             <li className="hover:bg-beige">
               <Link to="/recommend">
-                <a className="py-4">추천 문의</a>
+                <span className="py-4">추천 문의</span>
               </Link>
             </li>
           </ul>
@@ -66,12 +66,12 @@ const Header = () => {
           <ul className="menu menu-horizontal px-1 text-md text-base">
             <li>
               <Link to="/review">
-                <a>향기 리뷰</a>
+                <span>향기 리뷰</span>
               </Link>
             </li>
             <li>
               <Link to="/recommend">
-                <a>추천 문의</a>
+                <span>추천 문의</span>
               </Link>
             </li>
           </ul>
@@ -79,19 +79,17 @@ const Header = () => {
         <div className="navbar-end flex w-full">
           <ul className="menu menu-horizontal text-base">
             <li>
-              <a className="search">검색</a>
+              <Link to="/search" className="search">
+                검색
+              </Link>
             </li>
             {isLoggedIn ? (
               <li>
-                <Link to="/mypage">
-                  <a>마이페이지</a>
-                </Link>
+                <Link to="/mypage">마이페이지</Link>
               </li>
             ) : (
               <li>
-                <Link to="/login">
-                  <a>로그인</a>
-                </Link>
+                <Link to="/login">로그인</Link>
               </li>
             )}
           </ul>

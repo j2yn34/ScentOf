@@ -1,0 +1,42 @@
+// SearchPage.tsx
+import { FormEvent, useState } from "react";
+import SearchReviewPost from "../components/posts/SearchReviewPost";
+
+const SearchPage = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [submittedSearchTerm, setSubmittedSearchTerm] = useState("");
+
+  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setSubmittedSearchTerm(searchTerm);
+  };
+
+  return (
+    <div className="pt-14 px-4">
+      <form onSubmit={onSubmit} className="flex justify-center">
+        <input
+          type="text"
+          className="border-b border-brown p-2 mr-4 w-[280px] focus:outline-none placeholder:text-brown-300 placeholder:italic"
+          placeholder="브랜드명, 제품명을 검색해 보세요."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+        <button type="submit" className="btn primary-btn">
+          검색
+        </button>
+      </form>
+      <div className="mt-8">
+        {submittedSearchTerm && (
+          <>
+            <h2 className="text-2xl text-left font-bold mb-6 lg:mb-8">
+              향기 리뷰 검색 결과
+            </h2>
+            <SearchReviewPost limit={6} searchTerm={submittedSearchTerm} />
+          </>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default SearchPage;
