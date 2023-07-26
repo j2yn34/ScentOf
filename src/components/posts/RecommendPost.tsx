@@ -17,10 +17,18 @@ type RecommendData = {
   title: string;
 };
 
-const RecommendPost = ({ limit }: { limit: number }): JSX.Element => {
+type RecommendPostProps = {
+  limit: number;
+  currentPage: number;
+};
+
+const RecommendPost = ({
+  limit,
+  currentPage,
+}: RecommendPostProps): JSX.Element => {
   const [recommendDatas, setRecommendDatas] = useState<RecommendData[]>([]);
 
-  const getRecommendations = async () => {
+  const getRecommendations = async (currentPage: number) => {
     try {
       const dbRecommendations = collection(db, "recommendations");
       const result = await getDocs(
@@ -30,15 +38,19 @@ const RecommendPost = ({ limit }: { limit: number }): JSX.Element => {
         ...doc.data(),
         id: doc.id,
       })) as RecommendData[];
-      setRecommendDatas(dataArr);
+
+      const startIndex = (currentPage - 1) * limit;
+      const endIndex = currentPage * limit;
+
+      setRecommendDatas(dataArr.slice(startIndex, endIndex));
     } catch (error) {
       console.error("리스트를 불러오는 중 오류 발생:", error);
     }
   };
 
   useEffect(() => {
-    getRecommendations();
-  }, []);
+    getRecommendations(currentPage);
+  }, [currentPage]);
 
   return (
     <div className="flex flex-col">

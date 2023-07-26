@@ -6,7 +6,11 @@ import { useRecoilValue } from "recoil";
 import { isLoggedInState } from "../../state/userState";
 
 const RecommendPage = (): JSX.Element => {
-  const [page, setPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const handlePageButtonClick = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
   const isLoggedIn = useRecoilValue(isLoggedInState);
 
   return (
@@ -22,11 +26,11 @@ const RecommendPage = (): JSX.Element => {
           글쓰기
         </LineButton>
       </div>
-      <RecommendPost limit={6} />
+      <RecommendPost limit={6} currentPage={currentPage} />
       <Pagination
         maxPage={5}
-        currentPage={page}
-        onClickPageButton={(pageNumber) => setPage(pageNumber)}
+        currentPage={currentPage}
+        onClickPageButton={handlePageButtonClick}
       />
     </div>
   );
