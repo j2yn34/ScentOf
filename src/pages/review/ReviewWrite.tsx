@@ -51,7 +51,7 @@ const ReviewWrite = () => {
           imageUrl,
         });
 
-        navigate("/review", { replace: true });
+        navigate(-1);
         console.log("문서 ID:", docRef.id);
       }
     } catch (error) {

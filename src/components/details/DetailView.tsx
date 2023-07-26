@@ -66,7 +66,7 @@ const DetailView = ({ postId, postType }: DetailViewProps) => {
     const ok = confirm("게시글을 삭제할까요?");
     if (ok) {
       await deleteDoc(doc(db, collectionName, post.id));
-      navigate("/review");
+      navigate(-1);
     }
   };
 
