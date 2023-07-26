@@ -15,10 +15,15 @@ type reviewData = {
   imageUrl?: string;
 };
 
-const ReviewPost = ({ limit }: { limit: number }): JSX.Element => {
+type ReviewPostProps = {
+  limit: number;
+  currentPage: number;
+};
+
+const ReviewPost = ({ limit, currentPage }: ReviewPostProps): JSX.Element => {
   const [reviewDatas, setReviewDatas] = useState<reviewData[]>([]);
 
-  const getreviews = async () => {
+  const getreviews = async (currentPage: number) => {
     try {
       const dbreviews = collection(db, "reviews");
       const result = await getDocs(
@@ -28,15 +33,19 @@ const ReviewPost = ({ limit }: { limit: number }): JSX.Element => {
         ...doc.data(),
         id: doc.id,
       })) as reviewData[];
-      setReviewDatas(dataArr);
+
+      const startIndex = (currentPage - 1) * limit;
+      const endIndex = currentPage * limit;
+
+      setReviewDatas(dataArr.slice(startIndex, endIndex));
     } catch (error) {
       console.error("리스트를 불러오는 중 오류 발생:", error);
     }
   };
 
   useEffect(() => {
-    getreviews();
-  }, []);
+    getreviews(currentPage);
+  }, [currentPage]);
 
   const defaultImage = "src/assets/defaultImage.jpg";
 

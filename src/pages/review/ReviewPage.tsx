@@ -6,7 +6,7 @@ import { useRecoilValue } from "recoil";
 import { isLoggedInState } from "../../state/userState";
 
 const ReviewPage = () => {
-  const [page, setPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
   const isLoggedIn = useRecoilValue(isLoggedInState);
 
   return (
@@ -24,11 +24,11 @@ const ReviewPage = () => {
           글쓰기
         </LineButton>
       </div>
-      <ReviewPost limit={6} />
+      <ReviewPost limit={6} currentPage={currentPage} />
       <Pagination
         maxPage={5}
-        currentPage={page}
-        onClickPageButton={(pageNumber) => setPage(pageNumber)}
+        currentPage={currentPage}
+        onClickPageButton={(pageNumber) => setCurrentPage(pageNumber)}
       />
     </div>
   );
