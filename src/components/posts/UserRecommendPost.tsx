@@ -10,7 +10,7 @@ import { db } from "../../database/initialize";
 import { useEffect, useState } from "react";
 import TimeDiff from "../common/timeFormat/TimeDiff";
 import { useSetRecoilState } from "recoil";
-import { hasUserRecommendState } from "../../state/authState";
+import { hasUserRecommendState } from "../../state/userState";
 
 type RecommendData = {
   id: string;

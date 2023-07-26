@@ -3,7 +3,7 @@ import RecommendPost from "../../components/posts/RecommendPost";
 import Pagination from "../../components/common/Pagination";
 import LineButton from "../../components/common/buttons/LineButton";
 import { useRecoilValue } from "recoil";
-import { isLoggedInState } from "../../state/authState";
+import { isLoggedInState } from "../../state/userState";
 
 const RecommendPage = (): JSX.Element => {
   const [page, setPage] = useState(1);

@@ -1,6 +1,6 @@
 import { FormEvent, useState } from "react";
 import { useRecoilValue } from "recoil";
-import { isLoggedInState } from "../../state/authState";
+import { isLoggedInState } from "../../state/userState";
 import { auth, db } from "../../database/initialize";
 import { addDoc, collection } from "firebase/firestore";
 

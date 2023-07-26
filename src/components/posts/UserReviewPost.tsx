@@ -4,7 +4,7 @@ import { db } from "../../database/initialize";
 import { useEffect, useState } from "react";
 import Rating from "../common/Rating";
 import { useSetRecoilState } from "recoil";
-import { hasUserReviewState } from "../../state/authState";
+import { hasUserReviewState } from "../../state/userState";
 
 type reviewData = {
   id: string;

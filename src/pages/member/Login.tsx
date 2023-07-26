@@ -7,7 +7,7 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 import { useSetRecoilState } from "recoil";
-import { isLoggedInState } from "../../state/authState";
+import { isLoggedInState } from "../../state/userState";
 import { validateField } from "../../utils/validation";
 
 const Login = () => {

@@ -6,7 +6,7 @@ import {
   isLoggedInState,
   hasUserReviewState,
   hasUserRecommendState,
-} from "../../state/authState";
+} from "../../state/userState";
 import Pagination from "../../components/common/Pagination";
 import UserReviewPost from "../../components/posts/UserReviewPost";
 import UserRecommendPost from "../../components/posts/UserRecommendPost";

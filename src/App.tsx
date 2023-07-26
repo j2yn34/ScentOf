@@ -7,7 +7,7 @@ import Router from "./components/Router";
 import { useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { useSetRecoilState } from "recoil";
-import { isLoggedInState } from "./state/authState";
+import { isLoggedInState } from "./state/userState";
 import { auth } from "./database/initialize";
 
 function App() {
