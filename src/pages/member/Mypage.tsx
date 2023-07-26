@@ -17,7 +17,7 @@ const Mypage = () => {
   const setIsLoggedIn = useSetRecoilState(isLoggedInState);
   const currentUser = auth.currentUser;
   const [activeTab, setActiveTab] = useState("review");
-  const [page, setPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
   const hasUserReview = useRecoilValue(hasUserReviewState);
   const hasUserRecommend = useRecoilValue(hasUserRecommendState);
 
@@ -87,8 +87,10 @@ const Mypage = () => {
                   </LineButton>
                   <Pagination
                     maxPage={5}
-                    currentPage={page}
-                    onClickPageButton={(pageNumber) => setPage(pageNumber)}
+                    currentPage={currentPage}
+                    onClickPageButton={(pageNumber) =>
+                      setCurrentPage(pageNumber)
+                    }
                   />
                 </div>
               ) : (
@@ -116,8 +118,10 @@ const Mypage = () => {
                   </LineButton>
                   <Pagination
                     maxPage={5}
-                    currentPage={page}
-                    onClickPageButton={(pageNumber) => setPage(pageNumber)}
+                    currentPage={currentPage}
+                    onClickPageButton={(pageNumber) =>
+                      setCurrentPage(pageNumber)
+                    }
                   />
                 </div>
               ) : (
