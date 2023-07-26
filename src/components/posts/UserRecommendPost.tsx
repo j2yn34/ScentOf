@@ -9,6 +9,8 @@ import {
 import { db } from "../../database/initialize";
 import { useEffect, useState } from "react";
 import TimeDiff from "../common/timeFormat/TimeDiff";
+import { useSetRecoilState } from "recoil";
+import { hasUserRecommendState } from "../../state/authState";
 
 type RecommendData = {
   id: string;
@@ -25,7 +27,10 @@ const UserRecommendPost = ({
   limit: number;
   userId: string;
 }): JSX.Element => {
-  const [recommendDatas, setRecommendDatas] = useState<RecommendData[]>([]);
+  const [userRecommendDatas, setUserRecommendDatas] = useState<RecommendData[]>(
+    []
+  );
+  const hasUserRecommend = useSetRecoilState(hasUserRecommendState);
 
   const getRecommendations = async () => {
     try {
@@ -40,7 +45,8 @@ const UserRecommendPost = ({
       const userRecommendPosts = dataArr.filter(
         (post) => post.userId === userId
       );
-      setRecommendDatas(userRecommendPosts);
+      hasUserRecommend(userRecommendPosts.length > 0);
+      setUserRecommendDatas(userRecommendPosts);
     } catch (error) {
       console.error("리스트를 불러오는 중 오류 발생:", error);
     }
@@ -52,7 +58,7 @@ const UserRecommendPost = ({
 
   return (
     <div className="flex flex-col">
-      {recommendDatas.slice(0, limit).map((data) => (
+      {userRecommendDatas.slice(0, limit).map((data) => (
         <Link
           to={`/recommend/${data.id}`}
           key={data.id}

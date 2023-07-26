@@ -3,6 +3,8 @@ import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { db } from "../../database/initialize";
 import { useEffect, useState } from "react";
 import Rating from "../common/Rating";
+import { useSetRecoilState } from "recoil";
+import { hasUserReviewState } from "../../state/authState";
 
 type reviewData = {
   id: string;
@@ -23,7 +25,8 @@ const UserReviewPost = ({
   limit: number;
   userId: string;
 }): JSX.Element => {
-  const [reviewDatas, setReviewDatas] = useState<reviewData[]>([]);
+  const [userReviewDatas, setUserReviewDatas] = useState<reviewData[]>([]);
+  const hasUserReview = useSetRecoilState(hasUserReviewState);
 
   const getreviews = async () => {
     try {
@@ -36,7 +39,8 @@ const UserReviewPost = ({
         id: doc.id,
       })) as reviewData[];
       const userReviewPosts = dataArr.filter((post) => post.userId === userId);
-      setReviewDatas(userReviewPosts);
+      hasUserReview(userReviewPosts.length > 0);
+      setUserReviewDatas(userReviewPosts);
     } catch (error) {
       console.error("리스트를 불러오는 중 오류 발생:", error);
     }
@@ -50,7 +54,7 @@ const UserReviewPost = ({
 
   return (
     <div className="grid grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-      {reviewDatas.slice(0, limit).map((review, index) => (
+      {userReviewDatas.slice(0, limit).map((review, index) => (
         <Link
           to={`/review/${review.id}`}
           key={index}

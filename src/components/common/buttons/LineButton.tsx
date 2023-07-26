@@ -3,18 +3,25 @@ import { useNavigate } from "react-router-dom";
 interface LineButtonProps {
   children: React.ReactNode;
   className?: string;
-  path: string;
+  path?: string;
+  onClick?: () => void;
 }
 
 const LineButton: React.FC<LineButtonProps> = ({
   children,
   className,
   path,
+  onClick,
 }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate(path);
+    if (path) {
+      navigate(path);
+    }
+    if (onClick) {
+      onClick();
+    }
   };
 
   return (
