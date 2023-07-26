@@ -35,7 +35,7 @@ const ReviewWrite = () => {
   const [productName, setProductName] = useState("");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [rating, setRating] = useState(0);
+  const [rating, setRating] = useState<number | null>(null);
   const [attachment, setAttachment] = useState<string | undefined>(undefined);
 
   const navigate = useNavigate();
@@ -77,6 +77,7 @@ const ReviewWrite = () => {
       if (!postId) {
         return;
       }
+
       let imageUrl = "";
 
       if (attachment) {
@@ -120,6 +121,11 @@ const ReviewWrite = () => {
           imageUrl = attachmentUrl;
         }
 
+        if (rating === null) {
+          alert("별점을 선택해주세요.");
+          return;
+        }
+
         const docRef = await addDoc(collection(db, "reviews"), {
           userId: currentUser.uid,
           nickname: currentUser.displayName,
@@ -131,6 +137,7 @@ const ReviewWrite = () => {
           postedDate: new Date(),
           imageUrl,
         });
+
         navigate(-1);
         console.log("문서 ID:", docRef.id);
       }
@@ -225,7 +232,10 @@ const ReviewWrite = () => {
             </div>
             <div className="mb-6">
               <h4 className="font-bold mb-4">별점*</h4>
-              <Rating rating={rating} setRating={handleRatingChange} />
+              <Rating
+                rating={rating !== null ? rating : 0}
+                setRating={handleRatingChange}
+              />
             </div>
           </div>
           <div className="mb-6 flex flex-wrap">

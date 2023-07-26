@@ -50,7 +50,6 @@ const Rating = ({
               onMouseLeave={() => handleRatingLeave()}
               onClick={() => handleRatingClick(index)}
               disabled={readOnly}
-              required
             />
           );
         })}
