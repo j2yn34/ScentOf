@@ -20,9 +20,11 @@ const Router = () => {
       <Route path="/review" element={<ReviewPage />} />
       <Route path="/review/:postId" element={<ReviewDetail />} />
       <Route path="/review/write" element={<ReviewWrite />} />
+      <Route path="/review/edit/:postId" element={<ReviewWrite />} />
       <Route path="/recommend" element={<RecommendPage />} />
       <Route path="/recommend/:postId" element={<RecommendDetail />} />
       <Route path="/recommend/write" element={<RecommendWrite />} />
+      <Route path="/recommend/edit/:postId" element={<RecommendWrite />} />
       <Route path="/mypage" element={<Mypage />} />
       <Route path="/search" element={<SearchPage />} />
     </Routes>

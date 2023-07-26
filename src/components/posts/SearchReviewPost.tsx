@@ -35,7 +35,7 @@ const SearchReviewPost = ({
     const fetchSearchResults = async () => {
       const reviewsRef = collection(db, "reviews");
 
-      const querySnapshot: QuerySnapshot = await getDocs(
+      const brandQuerySnapshot: QuerySnapshot = await getDocs(
         query(
           reviewsRef,
           where("brandName", ">=", searchTerm),
@@ -43,17 +43,23 @@ const SearchReviewPost = ({
         )
       );
 
-      const results: reviewData[] = querySnapshot.docs.map(
-        (doc: QueryDocumentSnapshot) => {
-          const data = doc.data();
-          return {
-            id: doc.id,
-            ...data,
-          } as reviewData;
-        }
+      const productQuerySnapshot: QuerySnapshot = await getDocs(
+        query(
+          reviewsRef,
+          where("productName", ">=", searchTerm),
+          where("productName", "<=", searchTerm + "\uf8ff")
+        )
       );
 
-      setSearchResults(results);
+      const brandResults: reviewData[] = brandQuerySnapshot.docs.map(
+        (doc: QueryDocumentSnapshot) => doc.data() as reviewData
+      );
+      const productResults: reviewData[] = productQuerySnapshot.docs.map(
+        (doc: QueryDocumentSnapshot) => doc.data() as reviewData
+      );
+
+      const mergedResults = [...brandResults, ...productResults];
+      setSearchResults(mergedResults);
     };
 
     fetchSearchResults();

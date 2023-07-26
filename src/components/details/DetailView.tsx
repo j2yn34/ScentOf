@@ -70,6 +70,12 @@ const DetailView = ({ postId, postType }: DetailViewProps) => {
     }
   };
 
+  const onEditClick = () => {
+    const editPagePath =
+      postType === "reviews" ? "/review/edit" : "/recommend/edit";
+    navigate(`${editPagePath}/${postId}`);
+  };
+
   return (
     <div className="mb-4">
       {currentUser && currentUser.uid === post.userId && (
@@ -77,7 +83,9 @@ const DetailView = ({ postId, postType }: DetailViewProps) => {
           <button onClick={onDeleteClick(post)} className="text-sm text-red">
             삭제하기
           </button>
-          <button className="text-sm ml-4">수정하기</button>
+          <button onClick={onEditClick} className="text-sm ml-4">
+            수정하기
+          </button>
         </div>
       )}
       {postType === "reviews" && (

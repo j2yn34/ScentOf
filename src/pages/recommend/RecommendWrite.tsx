@@ -1,10 +1,26 @@
-import { ChangeEvent, FormEvent, useRef, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { modules } from "../quillModules";
 import { auth, db } from "../../database/initialize";
-import { collection, addDoc } from "firebase/firestore";
-import { useNavigate } from "react-router-dom";
+import {
+  collection,
+  addDoc,
+  doc,
+  getDoc,
+  Timestamp,
+  updateDoc,
+} from "firebase/firestore";
+import { useNavigate, useParams } from "react-router-dom";
+
+type PostData = {
+  id: string;
+  nickname: string;
+  userId: string;
+  title: string;
+  content: string;
+  postedDate: Timestamp;
+};
 
 const RecommendWrite = () => {
   const QuillRef = useRef<ReactQuill | null>(null);
@@ -12,11 +28,56 @@ const RecommendWrite = () => {
   const [content, setContent] = useState("");
   const navigate = useNavigate();
 
-  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const { postId } = useParams<{ postId: string }>();
+  const [isEditing, setIsEditing] = useState(false);
+
+  useEffect(() => {
+    if (postId) {
+      getRecommendData();
+    }
+  }, [postId]);
+
+  const getRecommendData = async () => {
+    try {
+      if (!postId) {
+        return;
+      }
+      const docRef = doc(db, "recommendations", postId);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        const postData = docSnap.data() as PostData;
+        setTitle(postData.title);
+        setContent(postData.content);
+        setIsEditing(true);
+      } else {
+        console.log("문서가 존재하지 않습니다.");
+      }
+    } catch (error) {
+      console.error("문서를 불러오는 중 오류 발생:", error);
+    }
+  };
+
+  const handleUpdate = async () => {
+    try {
+      if (!postId) {
+        return;
+      }
+      const docRef = doc(db, "recommendations", postId);
+      await updateDoc(docRef, {
+        title: title,
+        content: content,
+      });
+      console.log("수정 완료");
+      navigate(-1);
+    } catch (error) {
+      console.error("수정 오류:", error);
+    }
+  };
+
+  const handleAdd = async () => {
     try {
       const currentUser = auth.currentUser;
-
       if (currentUser) {
         const docRef = await addDoc(collection(db, "recommendations"), {
           nickname: currentUser.displayName,
@@ -25,13 +86,20 @@ const RecommendWrite = () => {
           content: content,
           postedDate: new Date(),
         });
-        setTitle("");
-        setContent("");
+        console.log("새로운 문서 ID:", docRef.id);
         navigate(-1);
-        console.log("문서 ID:", docRef.id);
       }
     } catch (error) {
       console.error("Firestore 저장 오류:", error);
+    }
+  };
+
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (isEditing) {
+      handleUpdate();
+    } else {
+      handleAdd();
     }
   };
 
@@ -82,7 +150,7 @@ const RecommendWrite = () => {
               취소
             </button>
             <button type="submit" className="mt-8 ml-4 btn primary-btn">
-              작성 완료
+              {isEditing ? "수정 완료" : "작성 완료"}
             </button>
           </div>
         </form>
