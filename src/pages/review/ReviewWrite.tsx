@@ -1,13 +1,33 @@
-import { ChangeEvent, FormEvent, useRef, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { modules } from "../quillModules";
 import { auth, db, storage } from "../../database/initialize";
-import { collection, addDoc } from "firebase/firestore";
-import { useNavigate } from "react-router-dom";
+import {
+  collection,
+  addDoc,
+  doc,
+  getDoc,
+  Timestamp,
+  updateDoc,
+} from "firebase/firestore";
+import { useNavigate, useParams } from "react-router-dom";
 import Rating from "../../components/common/Rating";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
+
+type ReviewData = {
+  id: string;
+  userId: string;
+  nickname: string;
+  postedDate: Timestamp;
+  title: string;
+  content: string;
+  brandName: string;
+  productName: string;
+  imageUrl: string;
+  rating: number;
+};
 
 const ReviewWrite = () => {
   const QuillRef = useRef<ReactQuill | null>(null);
@@ -19,9 +39,70 @@ const ReviewWrite = () => {
   const [attachment, setAttachment] = useState<string | undefined>(undefined);
 
   const navigate = useNavigate();
+  const { postId } = useParams<{ postId: string }>();
+  const [isEditing, setIsEditing] = useState(false);
 
-  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  useEffect(() => {
+    if (postId) {
+      getReviewData();
+    }
+  }, [postId]);
+
+  const getReviewData = async () => {
+    try {
+      if (!postId) {
+        return;
+      }
+      const docRef = doc(db, "reviews", postId);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        const reviewData = docSnap.data() as ReviewData;
+        setBrandName(reviewData.brandName);
+        setProductName(reviewData.productName);
+        setTitle(reviewData.title);
+        setContent(reviewData.content);
+        setRating(reviewData.rating);
+        setIsEditing(true);
+      } else {
+        console.log("문서가 존재하지 않습니다.");
+      }
+    } catch (error) {
+      console.error("문서를 불러오는 중 오류 발생:", error);
+    }
+  };
+
+  const handleUpdate = async () => {
+    try {
+      if (!postId) {
+        return;
+      }
+      let imageUrl = "";
+
+      if (attachment) {
+        const storageRef = ref(storage, `reviewImages/${uuidv4()}`);
+        const response = await uploadString(storageRef, attachment, "data_url");
+        const attachmentUrl = await getDownloadURL(response.ref);
+        imageUrl = attachmentUrl;
+      }
+
+      const docRef = doc(db, "reviews", postId);
+      await updateDoc(docRef, {
+        brandName: brandName,
+        productName: productName,
+        title: title,
+        content: content,
+        rating: rating,
+        imageUrl,
+      });
+      console.log("수정 완료");
+      navigate(-1);
+    } catch (error) {
+      console.error("수정 오류:", error);
+    }
+  };
+
+  const handleAdd = async () => {
     try {
       const currentUser = auth.currentUser;
 
@@ -50,12 +131,20 @@ const ReviewWrite = () => {
           postedDate: new Date(),
           imageUrl,
         });
-
         navigate(-1);
         console.log("문서 ID:", docRef.id);
       }
     } catch (error) {
       console.error("Firestore 저장 오류:", error);
+    }
+  };
+
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (isEditing) {
+      handleUpdate();
+    } else {
+      handleAdd();
     }
   };
 
@@ -200,7 +289,7 @@ const ReviewWrite = () => {
               취소
             </button>
             <button type="submit" className="mt-8 ml-4 btn primary-btn">
-              작성 완료
+              {isEditing ? "수정 완료" : "작성 완료"}
             </button>
           </div>
         </form>
