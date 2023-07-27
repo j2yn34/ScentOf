@@ -52,10 +52,23 @@ const SearchReviewPost = ({
       );
 
       const brandResults: reviewData[] = brandQuerySnapshot.docs.map(
-        (doc: QueryDocumentSnapshot) => doc.data() as reviewData
+        (doc: QueryDocumentSnapshot) => {
+          const data = doc.data();
+          return {
+            id: doc.id,
+            ...data,
+          } as reviewData;
+        }
       );
+
       const productResults: reviewData[] = productQuerySnapshot.docs.map(
-        (doc: QueryDocumentSnapshot) => doc.data() as reviewData
+        (doc: QueryDocumentSnapshot) => {
+          const data = doc.data();
+          return {
+            id: doc.id,
+            ...data,
+          } as reviewData;
+        }
       );
 
       const mergedResults = [...brandResults, ...productResults];
