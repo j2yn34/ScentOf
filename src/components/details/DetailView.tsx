@@ -76,6 +76,10 @@ const DetailView = ({ postId, postType }: DetailViewProps) => {
     navigate(`${editPagePath}/${postId}`);
   };
 
+  const onClick = () => {
+    postType === "reviews" ? navigate("/review") : navigate("/recommend");
+  };
+
   return (
     <div className="mb-4">
       {currentUser && currentUser.uid === post.userId && (
@@ -124,7 +128,7 @@ const DetailView = ({ postId, postType }: DetailViewProps) => {
         <div className="border-y border-brown-400 min-h-[250px] px-4 py-6 mb-3">
           {parse(safeContent)}
         </div>
-        <LineButton path="/recommend" className="flex text-sm justify-end">
+        <LineButton onClick={onClick} className="flex text-sm justify-end">
           목록으로
         </LineButton>
       </div>
