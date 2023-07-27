@@ -7,7 +7,6 @@ import {
   hasUserReviewState,
   hasUserRecommendState,
 } from "../../state/userState";
-import Pagination from "../../components/common/Pagination";
 import UserReviewPost from "../../components/posts/UserReviewPost";
 import UserRecommendPost from "../../components/posts/UserRecommendPost";
 import LineButton from "../../components/common/buttons/LineButton";
@@ -17,7 +16,6 @@ const Mypage = () => {
   const setIsLoggedIn = useSetRecoilState(isLoggedInState);
   const currentUser = auth.currentUser;
   const [activeTab, setActiveTab] = useState("review");
-  const [currentPage, setCurrentPage] = useState(1);
   const hasUserReview = useRecoilValue(hasUserReviewState);
   const hasUserRecommend = useRecoilValue(hasUserRecommendState);
 
@@ -85,13 +83,6 @@ const Mypage = () => {
                   >
                     글쓰기
                   </LineButton>
-                  <Pagination
-                    maxPage={5}
-                    currentPage={currentPage}
-                    onClickPageButton={(pageNumber) =>
-                      setCurrentPage(pageNumber)
-                    }
-                  />
                 </div>
               ) : (
                 <div className="flex flex-col justify-center items-center w-full bg-beige min-h-[200px] rounded-2xl">
@@ -116,13 +107,6 @@ const Mypage = () => {
                   >
                     글쓰기
                   </LineButton>
-                  <Pagination
-                    maxPage={5}
-                    currentPage={currentPage}
-                    onClickPageButton={(pageNumber) =>
-                      setCurrentPage(pageNumber)
-                    }
-                  />
                 </div>
               ) : (
                 <div className="flex flex-col justify-center items-center w-full bg-beige min-h-[200px] rounded-2xl">

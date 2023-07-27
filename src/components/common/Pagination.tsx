@@ -15,32 +15,59 @@ const Pagination = ({
   maxPage,
   onClickPageButton,
 }: Pagenation): JSX.Element => {
+  const isFirstPage = currentPage === 1;
+  const isMaxPage = currentPage === maxPage;
+
+  const getPageNumbers = () => {
+    const pageNumbers = [];
+
+    let startPage = 1;
+    let endPage = Math.min(maxPage, startPage + maxPage - 1);
+
+    if (isMaxPage && maxPage > 1) {
+      startPage = Math.max(1, maxPage - 4);
+      endPage = maxPage;
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+      pageNumbers.push(i);
+    }
+
+    return pageNumbers;
+  };
+
   return (
     <div className="mt-11 flex justify-center items-center">
-      <button
-        className={`flex flex-row items-center ${
-          currentPage === 1 ? "disabled" : ""
-        }`}
-      >
-        <span className="arrow-left-sm border-brown-400 aria-hidden" />
-        <span className="text-brown-400 mr-2.5 text-sm">이전</span>
-      </button>
-      {new Array(maxPage).fill(null).map((_, index) => (
+      {!isFirstPage && (
+        <button
+          className={`flex flex-row items-center ${
+            isFirstPage ? "disabled" : ""
+          }`}
+          onClick={() => onClickPageButton(currentPage - 1)}
+        >
+          <span className="arrow-left-sm border-brown-400 aria-hidden" />
+          <span className="text-brown-400 mr-2.5 text-sm">이전</span>
+        </button>
+      )}
+      {getPageNumbers().map((pageNumber) => (
         <PageButton
-          key={index}
-          pageNumber={index + 1}
-          onClick={() => onClickPageButton(index + 1)}
-          selected={index + 1 === currentPage}
+          key={pageNumber}
+          pageNumber={pageNumber}
+          onClick={() => onClickPageButton(pageNumber)}
+          selected={pageNumber === currentPage}
         />
       ))}
-      <button
-        className={`flex flex-row items-center ${
-          currentPage === maxPage ? "disabled" : ""
-        }`}
-      >
-        <span className="text-brown-400 ml-2.5 text-sm">다음</span>
-        <span className="arrow-right-sm border-brown-400 aria-hidden" />
-      </button>
+      {!isMaxPage && (
+        <button
+          className={`flex flex-row items-center ${
+            currentPage === maxPage ? "disabled" : ""
+          }`}
+          onClick={() => onClickPageButton(currentPage + 1)}
+        >
+          <span className="text-brown-400 ml-2.5 text-sm">다음</span>
+          <span className="arrow-right-sm border-brown-400 aria-hidden" />
+        </button>
+      )}
     </div>
   );
 };
