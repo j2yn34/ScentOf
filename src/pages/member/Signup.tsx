@@ -7,7 +7,7 @@ import {
 } from "firebase/auth";
 import { collection, addDoc, where, getDocs, query } from "firebase/firestore";
 import { auth, db } from "../../database/initialize";
-import { validateField } from "../../utils/validation";
+import { validation } from "../../utils/validation";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
@@ -82,7 +82,7 @@ const Signup = () => {
     const emailRegex =
       /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
 
-    validateField(
+    validation(
       emailValue,
       emailRegex,
       "올바른 이메일 형식이에요 : )",
@@ -111,7 +111,7 @@ const Signup = () => {
   const checkPasswordValid = (passwordValue: string) => {
     const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,}$/;
 
-    validateField(
+    validation(
       passwordValue,
       passwordRegex,
       "안전한 비밀번호예요 : )",

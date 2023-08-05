@@ -1,4 +1,4 @@
-export const validateField = (
+export const validation = (
   value: string,
   regex: RegExp,
   validMessage: string,

@@ -1,8 +1,8 @@
-import moment from "moment"; // moment 라이브러리 import
+import moment from "moment";
 
-const CustomDateTime = ({ timestamp }: { timestamp: Date }) => {
+const DateWithTime = ({ timestamp }: { timestamp: Date }) => {
   const formattedDateTime = moment(timestamp).format("YYYY-MM-DD HH:mm");
   return <span>{formattedDateTime}</span>;
 };
 
-export default CustomDateTime;
+export default DateWithTime;
