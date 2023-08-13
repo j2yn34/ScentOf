@@ -8,9 +8,9 @@
 향수, 핸드크림, 디퓨저 등 향이 나는 제품들의 리뷰를 기록하여 공유하고, 사용자들 간에 제품을 추천 받을 수 있는 커뮤니티 사이트입니다. <br/>
 개발 기간: 2023.07.06 ~ 2023.07.26
 
-노션 [👉🏻 바로가기](https://pinnate-chair-fbc.notion.site/ScentOf-cfbbcd5c0b4344fb91eb06080f1962f4?pvs=4)  
-ScentOf 사이트 [👉🏻 이용해보기](https://scent-of.vercel.app/)  
-시연 영상 [👉🏻 보러가기](https://www.youtube.com/watch?v=HwWINhJJsBo)  
+노션 <a href="https://pinnate-chair-fbc.notion.site/ScentOf-cfbbcd5c0b4344fb91eb06080f1962f4?pvs=4" target="_blank">👉🏻 바로가기</a> <br/>
+ScentOf 사이트<a href="https://scent-of.vercel.app/" target="_blank">👉🏻 이용해보기</a> <br/>
+시연 영상 <a href="https://www.youtube.com/watch?v=HwWINhJJsBo" target="_blank">👉🏻 보러가기</a> <br/>
 
   
 ## 📍 Skill
