@@ -50,7 +50,7 @@ const UserReviewPost = ({
     getreviews();
   }, []);
 
-  const defaultImage = "src/assets/defaultImage.jpg";
+  const defaultImage = "/defaultImage.jpg";
 
   return (
     <div className="grid grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
