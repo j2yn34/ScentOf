@@ -40,12 +40,16 @@ ScentOf 사이트<a href="https://scent-of.vercel.app/" target="_blank">👉🏻
 ### 1️⃣ Firebase Authentication를 활용한 회원가입
 <img src="https://github.com/j2yn34/ScentOf/assets/123265266/494259a3-56ed-40fe-8178-2f8790a2f022" alt="회원가입"> <br />
 + 이메일 회원가입
-   - 이메일 형식, 비밀번호 형식, 비밀번호 확인, 닉네임 유효성 검사
+   - 이메일, 비밀번호, 비밀번호 확인, 닉네임 유효성 검사 -> 모든 항목 통과 시 가입 버튼 활성화
    - 이메일, 닉네임 중복 확인
 + 소셜 로그인 (구글)
 
 ### 2️⃣ Firebase Firestore, Storage를 활용한 데이터 관리 (CRUD)
-<img src="https://github.com/j2yn34/ScentOf/assets/123265266/81ae0667-7cc2-4624-82d0-37d86a693216" alt="게시글등록,조회"> <br />
+|**게시글 등록/조회**|
+|:---:|
+|<img src="https://github.com/j2yn34/ScentOf/assets/123265266/81ae0667-7cc2-4624-82d0-37d86a693216" alt="게시글등록/조회">|
+|**게시글 수정/삭제**|
+<img src="https://github.com/j2yn34/ScentOf/assets/123265266/25172564-fc90-46d1-93cc-6408d6f1ae95" alt="게시글수정/삭제"/>|
 + Firestore 활용해 게시글 및 댓글 등록, 조회, 수정, 삭제 기능 구현
 + Storage 활용해 이미지 데이터 관리
 
