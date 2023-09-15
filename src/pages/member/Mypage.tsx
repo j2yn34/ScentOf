@@ -26,7 +26,7 @@ const Mypage = () => {
       alert("로그아웃 되었습니다. 또 만나요!");
       setIsLoggedIn(false);
       navigate("/");
-    }
+    } else return;
   };
 
   const onWriteClick = () => {
