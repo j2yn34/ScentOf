@@ -60,7 +60,7 @@ const DetailView = ({ postId, postType }: DetailViewProps) => {
 
   const currentUser = auth.currentUser;
   const safeContent = DOMPurify.sanitize(post.content);
-  const defaultImage = "/src/assets/defaultImage.jpg";
+  const defaultImage = "/defaultImage.jpg";
 
   const onDeleteClick = (post: PostData) => async () => {
     const ok = confirm("게시글을 삭제할까요?");
