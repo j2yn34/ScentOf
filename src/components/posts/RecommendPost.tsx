@@ -27,9 +27,12 @@ const RecommendPost = ({
   currentPage,
 }: RecommendPostProps): JSX.Element => {
   const [recommendDatas, setRecommendDatas] = useState<RecommendData[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const getRecommendations = async (currentPage: number) => {
     try {
+      setIsLoading(true);
+
       const dbRecommendations = collection(db, "recommendations");
       const result = await getDocs(
         query(dbRecommendations, orderBy("postedDate", "desc"))
@@ -45,6 +48,8 @@ const RecommendPost = ({
       setRecommendDatas(dataArr.slice(startIndex, endIndex));
     } catch (error) {
       console.error("리스트를 불러오는 중 오류 발생:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -53,25 +58,35 @@ const RecommendPost = ({
   }, [currentPage]);
 
   return (
-    <div className="flex flex-col">
-      {recommendDatas.slice(0, limit).map((data) => (
-        <Link
-          to={`/recommend/${data.id}`}
-          key={data.id}
-          className="flex items-center justify-between bg-beige w-full min-h-[64px] p-4 border-t border-brown-200 hover:bg-brown-200/[0.4] transition-all"
-        >
-          <p className="text-brown-900 md:text-base text-sm">{data.title}</p>
-          <div className="flex items-center text-brown-400 md:text-sm text-xs">
-            <span className="md:mx-4 mx-2.5 text-center md:w-[90px] w-[60px]">
-              {data.nickname}
-            </span>
-            <div className="md:w-[80px] w-[64px] text-center">
-              <TimeDiff timestamp={data.postedDate} />
-            </div>
-          </div>
-        </Link>
-      ))}
-    </div>
+    <>
+      {isLoading ? (
+        <div className="min-h-[204px] flex items-center justify-center">
+          <span className="loading loading-spinner loading-md text-brown-200"></span>
+        </div>
+      ) : (
+        <div className="flex flex-col">
+          {recommendDatas.slice(0, limit).map((data) => (
+            <Link
+              to={`/recommend/${data.id}`}
+              key={data.id}
+              className="flex items-center justify-between bg-beige w-full min-h-[64px] p-4 border-t border-brown-200 hover:bg-brown-200/[0.4] transition-all"
+            >
+              <p className="text-brown-900 md:text-base text-sm">
+                {data.title}
+              </p>
+              <div className="flex items-center text-brown-400 md:text-sm text-xs">
+                <span className="md:mx-4 mx-2.5 text-center md:w-[90px] w-[60px]">
+                  {data.nickname}
+                </span>
+                <div className="md:w-[80px] w-[64px] text-center">
+                  <TimeDiff timestamp={data.postedDate} />
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      )}
+    </>
   );
 };
 
