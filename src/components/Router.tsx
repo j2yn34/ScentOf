@@ -10,6 +10,7 @@ import ReviewWrite from "../pages/review/ReviewWrite";
 import RecommendWrite from "../pages/recommend/RecommendWrite";
 import Mypage from "../pages/member/Mypage";
 import SearchPage from "../pages/SearchPage";
+import NotFound from "../pages/NotFound";
 
 const Router = () => {
   return (
@@ -27,6 +28,7 @@ const Router = () => {
       <Route path="/recommend/edit/:postId" element={<RecommendWrite />} />
       <Route path="/mypage" element={<Mypage />} />
       <Route path="/search" element={<SearchPage />} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 };
