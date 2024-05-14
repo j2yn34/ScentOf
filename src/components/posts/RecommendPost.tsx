@@ -9,9 +9,12 @@ import {
 import { db } from "../../database/initialize";
 import { useEffect, useState } from "react";
 import TimeDiff from "../common/timeFormat/TimeDiff";
+import { useSetRecoilState } from "recoil";
+import { hasUserRecommendState } from "../../state/userState";
 
 type RecommendData = {
   id: string;
+  userId: string;
   nickname: string;
   postedDate: Timestamp;
   title: string;
@@ -20,13 +23,16 @@ type RecommendData = {
 type RecommendPostProps = {
   limit: number;
   currentPage: number;
+  userId: string;
 };
 
 const RecommendPost = ({
   limit,
   currentPage,
+  userId,
 }: RecommendPostProps): JSX.Element => {
   const [recommendDatas, setRecommendDatas] = useState<RecommendData[]>([]);
+  const hasUserRecommend = useSetRecoilState(hasUserRecommendState);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const getRecommendations = async (currentPage: number) => {
@@ -42,10 +48,17 @@ const RecommendPost = ({
         id: doc.id,
       })) as RecommendData[];
 
+      let filteredPosts = dataArr;
+
+      if (userId) {
+        filteredPosts = dataArr.filter((post) => post.userId === userId);
+        hasUserRecommend(filteredPosts.length > 0);
+      }
+
       const startIndex = (currentPage - 1) * limit;
       const endIndex = currentPage * limit;
 
-      setRecommendDatas(dataArr.slice(startIndex, endIndex));
+      setRecommendDatas(filteredPosts.slice(startIndex, endIndex));
     } catch (error) {
       console.error("리스트를 불러오는 중 오류 발생:", error);
     } finally {

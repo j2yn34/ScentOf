@@ -8,7 +8,7 @@ import {
   hasUserRecommendState,
 } from "../../state/userState";
 import UserReviewPost from "../../components/posts/UserReviewPost";
-import UserRecommendPost from "../../components/posts/UserRecommendPost";
+import RecommendPost from "../../components/posts/RecommendPost";
 import LineButton from "../../components/common/buttons/LineButton";
 
 const Mypage = () => {
@@ -100,7 +100,11 @@ const Mypage = () => {
             <>
               {hasUserRecommend ? (
                 <div className="flex flex-col">
-                  <UserRecommendPost limit={6} userId={currentUser.uid} />
+                  <RecommendPost
+                    limit={6}
+                    userId={currentUser.uid}
+                    currentPage={1}
+                  />
                   <LineButton
                     onClick={onWriteClick}
                     className="flex justify-end border-brown-300"
