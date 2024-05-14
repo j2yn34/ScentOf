@@ -17,8 +17,8 @@ const RecommendPage = (): JSX.Element => {
   useEffect(() => {
     const fetchTotalDataCount = async () => {
       try {
-        const dbreviews = collection(db, "reviews");
-        const result = await getDocs(dbreviews);
+        const dbRecommendations = collection(db, "recommendations");
+        const result = await getDocs(dbRecommendations);
         setTotalDataCount(result.docs.length);
       } catch (error) {
         console.error("데이터 개수를 가져오는 중 오류 발생:", error);
