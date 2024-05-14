@@ -7,7 +7,7 @@ import {
   hasUserReviewState,
   hasUserRecommendState,
 } from "../../state/userState";
-import UserReviewPost from "../../components/posts/UserReviewPost";
+import ReviewPost from "../../components/posts/ReviewPost";
 import RecommendPost from "../../components/posts/RecommendPost";
 import LineButton from "../../components/common/buttons/LineButton";
 
@@ -76,7 +76,11 @@ const Mypage = () => {
             <>
               {hasUserReview ? (
                 <div className="flex flex-col">
-                  <UserReviewPost limit={6} userId={currentUser.uid} />
+                  <ReviewPost
+                    limit={6}
+                    userId={currentUser.uid}
+                    currentPage={1}
+                  />
                   <LineButton
                     onClick={onWriteClick}
                     className="flex justify-end"

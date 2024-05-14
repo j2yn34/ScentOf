@@ -3,8 +3,11 @@ import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { db } from "../../database/initialize";
 import { useEffect, useState } from "react";
 import Rating from "../common/Rating";
+import { useSetRecoilState } from "recoil";
+import { hasUserReviewState } from "../../state/userState";
 
 type reviewData = {
+  userId: string;
   id: string;
   nickname: string;
   brandName: string;
@@ -18,10 +21,16 @@ type reviewData = {
 type ReviewPostProps = {
   limit: number;
   currentPage: number;
+  userId: string;
 };
 
-const ReviewPost = ({ limit, currentPage }: ReviewPostProps): JSX.Element => {
+const ReviewPost = ({
+  limit,
+  currentPage,
+  userId,
+}: ReviewPostProps): JSX.Element => {
   const [reviewDatas, setReviewDatas] = useState<reviewData[]>([]);
+  const hasUserReview = useSetRecoilState(hasUserReviewState);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const getreviews = async (currentPage: number) => {
@@ -37,10 +46,18 @@ const ReviewPost = ({ limit, currentPage }: ReviewPostProps): JSX.Element => {
         id: doc.id,
       })) as reviewData[];
 
+      let filteredPosts = dataArr;
+
+      if (userId) {
+        filteredPosts = dataArr.filter((post) => post.userId === userId);
+        hasUserReview(filteredPosts.length > 0);
+        setReviewDatas(filteredPosts);
+      }
+
       const startIndex = (currentPage - 1) * limit;
       const endIndex = currentPage * limit;
 
-      setReviewDatas(dataArr.slice(startIndex, endIndex));
+      setReviewDatas(filteredPosts.slice(startIndex, endIndex));
     } catch (error) {
       console.error("리스트를 불러오는 중 오류 발생:", error);
     } finally {
