@@ -5,7 +5,7 @@ import { modules } from "../quillModules";
 import { auth, db } from "../../database/initialize";
 import { collection, addDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 import { useNavigate, useParams } from "react-router-dom";
-import { RecommendWriteData } from "../../types";
+import { PostData } from "../../types";
 
 const RecommendWrite = () => {
   const QuillRef = useRef<ReactQuill | null>(null);
@@ -31,7 +31,7 @@ const RecommendWrite = () => {
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
-        const postData = docSnap.data() as RecommendWriteData;
+        const postData = docSnap.data() as PostData;
         setTitle(postData.title);
         setContent(postData.content);
         setIsEditing(true);

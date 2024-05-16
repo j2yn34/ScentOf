@@ -8,7 +8,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Rating from "../../components/common/Rating";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
-import { ReviewData } from "../../types";
+import { PostData } from "../../types";
 
 const ReviewWrite = () => {
   const QuillRef = useRef<ReactQuill | null>(null);
@@ -38,7 +38,7 @@ const ReviewWrite = () => {
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
-        const reviewData = docSnap.data() as ReviewData;
+        const reviewData = docSnap.data() as PostData;
         setBrandName(reviewData.brandName);
         setProductName(reviewData.productName);
         setTitle(reviewData.title);
