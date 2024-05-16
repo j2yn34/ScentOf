@@ -5,6 +5,9 @@ import {
   orderBy,
   query,
   Timestamp,
+  QueryDocumentSnapshot,
+  QuerySnapshot,
+  where,
 } from "firebase/firestore";
 import { db } from "../../database/initialize";
 import { useEffect, useState } from "react";
@@ -24,12 +27,14 @@ type RecommendPostProps = {
   limit: number;
   currentPage: number;
   userId: string;
+  searchTerm: string;
 };
 
 const RecommendPost = ({
   limit,
   currentPage,
   userId,
+  searchTerm,
 }: RecommendPostProps): JSX.Element => {
   const [recommendDatas, setRecommendDatas] = useState<RecommendData[]>([]);
   const hasUserRecommend = useSetRecoilState(hasUserRecommendState);
@@ -69,6 +74,36 @@ const RecommendPost = ({
   useEffect(() => {
     getRecommendations(currentPage);
   }, [currentPage]);
+
+  if (searchTerm) {
+    useEffect(() => {
+      const fetchSearchResults = async () => {
+        const dbRecommendations = collection(db, "recommendations");
+
+        const querySnapshot: QuerySnapshot = await getDocs(
+          query(
+            dbRecommendations,
+            where("title", ">=", searchTerm),
+            where("title", "<=", searchTerm + "\uf8ff")
+          )
+        );
+
+        const results: RecommendData[] = querySnapshot.docs.map(
+          (doc: QueryDocumentSnapshot) => {
+            const data = doc.data();
+            return {
+              id: doc.id,
+              ...data,
+            } as RecommendData;
+          }
+        );
+
+        setRecommendDatas(results);
+      };
+
+      fetchSearchResults();
+    }, [searchTerm]);
+  }
 
   return (
     <>

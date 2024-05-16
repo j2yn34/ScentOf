@@ -1,7 +1,6 @@
-// SearchPage.tsx
 import { FormEvent, useState } from "react";
 import SearchReviewPost from "../components/posts/SearchReviewPost";
-import SearchRecommendPost from "../components/posts/SearchRecommendPost";
+import RecommendPost from "../components/posts/RecommendPost";
 
 const SearchPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -38,7 +37,12 @@ const SearchPage = () => {
             <h2 className="text-2xl text-left font-bold mb-6">
               추천 문의 검색 결과
             </h2>
-            <SearchRecommendPost limit={4} searchTerm={submittedSearchTerm} />
+            <RecommendPost
+              limit={4}
+              searchTerm={submittedSearchTerm}
+              userId={""}
+              currentPage={1}
+            />
           </div>
         </>
       )}
