@@ -5,8 +5,6 @@ import {
   orderBy,
   query,
   Timestamp,
-  QueryDocumentSnapshot,
-  QuerySnapshot,
   where,
 } from "firebase/firestore";
 import { db } from "../../database/initialize";
@@ -40,30 +38,38 @@ const RecommendPost = ({
   const hasUserRecommend = useSetRecoilState(hasUserRecommendState);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const getRecommendations = async (currentPage: number) => {
+  const getRecommendations = async (currentPage: number, search?: string) => {
     try {
       setIsLoading(true);
 
       const dbRecommendations = collection(db, "recommendations");
-      const result = await getDocs(
-        query(dbRecommendations, orderBy("postedDate", "desc"))
-      );
+      let queryRef;
+
+      if (search) {
+        queryRef = query(
+          dbRecommendations,
+          where("title", ">=", searchTerm),
+          where("title", "<=", searchTerm + "\uf8ff")
+        );
+      } else {
+        queryRef = query(dbRecommendations, orderBy("postedDate", "desc"));
+      }
+
+      const result = await getDocs(queryRef);
       const dataArr = result.docs.map((doc) => ({
         ...doc.data(),
         id: doc.id,
       })) as RecommendData[];
 
-      let filteredPosts = dataArr;
-
       if (userId) {
-        filteredPosts = dataArr.filter((post) => post.userId === userId);
-        hasUserRecommend(filteredPosts.length > 0);
+        queryRef = dataArr.filter((post) => post.userId === userId);
+        hasUserRecommend(dataArr.length > 0);
       }
 
       const startIndex = (currentPage - 1) * limit;
       const endIndex = currentPage * limit;
 
-      setRecommendDatas(filteredPosts.slice(startIndex, endIndex));
+      setRecommendDatas(dataArr.slice(startIndex, endIndex));
     } catch (error) {
       console.error("리스트를 불러오는 중 오류 발생:", error);
     } finally {
@@ -75,35 +81,9 @@ const RecommendPost = ({
     getRecommendations(currentPage);
   }, [currentPage]);
 
-  if (searchTerm) {
-    useEffect(() => {
-      const fetchSearchResults = async () => {
-        const dbRecommendations = collection(db, "recommendations");
-
-        const querySnapshot: QuerySnapshot = await getDocs(
-          query(
-            dbRecommendations,
-            where("title", ">=", searchTerm),
-            where("title", "<=", searchTerm + "\uf8ff")
-          )
-        );
-
-        const results: RecommendData[] = querySnapshot.docs.map(
-          (doc: QueryDocumentSnapshot) => {
-            const data = doc.data();
-            return {
-              id: doc.id,
-              ...data,
-            } as RecommendData;
-          }
-        );
-
-        setRecommendDatas(results);
-      };
-
-      fetchSearchResults();
-    }, [searchTerm]);
-  }
+  useEffect(() => {
+    getRecommendations(1, searchTerm);
+  }, [searchTerm]);
 
   return (
     <>
