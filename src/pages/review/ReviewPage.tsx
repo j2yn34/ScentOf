@@ -43,7 +43,7 @@ const ReviewPage = () => {
           글쓰기
         </LineButton>
       </div>
-      <ReviewPost limit={limit} currentPage={currentPage} userId={""} />
+      <ReviewPost limit={limit} currentPage={currentPage} />
       <Pagination
         maxPage={maxPage}
         currentPage={currentPage}

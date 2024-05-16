@@ -41,7 +41,7 @@ const RecommendPage = (): JSX.Element => {
           글쓰기
         </LineButton>
       </div>
-      <RecommendPost limit={limit} currentPage={currentPage} userId={""} />
+      <RecommendPost limit={limit} currentPage={currentPage} />
       <Pagination
         maxPage={maxPage}
         currentPage={currentPage}

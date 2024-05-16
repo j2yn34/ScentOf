@@ -40,7 +40,6 @@ const SearchPage = () => {
             <RecommendPost
               limit={4}
               searchTerm={submittedSearchTerm}
-              userId={""}
               currentPage={1}
             />
           </div>

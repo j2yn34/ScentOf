@@ -21,7 +21,7 @@ type reviewData = {
 type ReviewPostProps = {
   limit: number;
   currentPage: number;
-  userId: string;
+  userId?: string;
 };
 
 const ReviewPost = ({

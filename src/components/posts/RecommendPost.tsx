@@ -24,8 +24,8 @@ type RecommendData = {
 type RecommendPostProps = {
   limit: number;
   currentPage: number;
-  userId: string;
-  searchTerm: string;
+  userId?: string;
+  searchTerm?: string;
 };
 
 const RecommendPost = ({
