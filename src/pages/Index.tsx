@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import ReviewPost from "../components/posts/ReviewPost";
-import RecommendPost from "../components/posts/RecommendPost";
+import ReviewPost from "../components/posts/ReviewCard";
+import RecommendPost from "../components/posts/RecommendCard";
 
 const Index = () => {
   return (

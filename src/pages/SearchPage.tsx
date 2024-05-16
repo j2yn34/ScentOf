@@ -1,6 +1,6 @@
 import { FormEvent, useState } from "react";
 import SearchReviewPost from "../components/posts/SearchReviewPost";
-import RecommendPost from "../components/posts/RecommendPost";
+import RecommendPost from "../components/posts/RecommendCard";
 
 const SearchPage = () => {
   const [searchTerm, setSearchTerm] = useState("");

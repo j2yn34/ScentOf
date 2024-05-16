@@ -7,8 +7,8 @@ import {
   hasUserReviewState,
   hasUserRecommendState,
 } from "../../state/userState";
-import ReviewPost from "../../components/posts/ReviewPost";
-import RecommendPost from "../../components/posts/RecommendPost";
+import ReviewPost from "../../components/posts/ReviewCard";
+import RecommendPost from "../../components/posts/RecommendCard";
 import LineButton from "../../components/common/buttons/LineButton";
 
 const Mypage = () => {

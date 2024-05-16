@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import RecommendPost from "../../components/posts/RecommendPost";
+import RecommendPost from "../../components/posts/RecommendCard";
 import Pagination from "../../components/common/Pagination";
 import LineButton from "../../components/common/buttons/LineButton";
 import { useRecoilValue } from "recoil";

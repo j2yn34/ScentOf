@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import ReviewPost from "../../components/posts/ReviewPost";
+import ReviewPost from "../../components/posts/ReviewCard";
 import Pagination from "../../components/common/Pagination";
 import LineButton from "../../components/common/buttons/LineButton";
 import { useRecoilValue } from "recoil";
