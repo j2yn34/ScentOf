@@ -5,31 +5,14 @@ import { useEffect, useState } from "react";
 import Rating from "../common/Rating";
 import { useSetRecoilState } from "recoil";
 import { hasUserReviewState } from "../../state/userState";
-
-type reviewData = {
-  userId: string;
-  id: string;
-  nickname: string;
-  brandName: string;
-  productName: string;
-  rating: number;
-  title: string;
-  content: string;
-  imageUrl?: string;
-};
-
-type ReviewPostProps = {
-  limit: number;
-  currentPage: number;
-  userId?: string;
-};
+import { PostData, ReviewProps } from "../../types";
 
 const ReviewPost = ({
   limit,
   currentPage,
   userId,
-}: ReviewPostProps): JSX.Element => {
-  const [reviewDatas, setReviewDatas] = useState<reviewData[]>([]);
+}: ReviewProps): JSX.Element => {
+  const [reviewDatas, setReviewDatas] = useState<PostData[]>([]);
   const hasUserReview = useSetRecoilState(hasUserReviewState);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -44,7 +27,7 @@ const ReviewPost = ({
       const dataArr = result.docs.map((doc) => ({
         ...doc.data(),
         id: doc.id,
-      })) as reviewData[];
+      })) as PostData[];
 
       let filteredPosts = dataArr;
 

@@ -1,27 +1,15 @@
 import { useEffect, useState } from "react";
 import DOMPurify from "dompurify";
 import parse from "html-react-parser";
-import { deleteDoc, doc, getDoc, Timestamp } from "firebase/firestore";
+import { deleteDoc, doc, getDoc } from "firebase/firestore";
 import { auth, db } from "../../database/initialize";
 import { useNavigate } from "react-router-dom";
 import LineButton from "../common/buttons/LineButton";
 import CustomDateTime from "../common/timeFormat/DateWithTime";
 import Rating from "../common/Rating";
+import { PostData } from "../../types";
 
 type PostType = "recommend" | "reviews";
-
-type PostData = {
-  id: string;
-  userId: string;
-  nickname: string;
-  postedDate: Timestamp;
-  title: string;
-  content: string;
-  brandName: string;
-  productName: string;
-  imageUrl: string;
-  rating: number;
-};
 
 type DetailViewProps = {
   postId: string;

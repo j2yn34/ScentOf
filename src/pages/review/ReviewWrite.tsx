@@ -3,31 +3,12 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { modules } from "../quillModules";
 import { auth, db, storage } from "../../database/initialize";
-import {
-  collection,
-  addDoc,
-  doc,
-  getDoc,
-  Timestamp,
-  updateDoc,
-} from "firebase/firestore";
+import { collection, addDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 import { useNavigate, useParams } from "react-router-dom";
 import Rating from "../../components/common/Rating";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
-
-type ReviewData = {
-  id: string;
-  userId: string;
-  nickname: string;
-  postedDate: Timestamp;
-  title: string;
-  content: string;
-  brandName: string;
-  productName: string;
-  imageUrl: string;
-  rating: number;
-};
+import { ReviewData } from "../../types";
 
 const ReviewWrite = () => {
   const QuillRef = useRef<ReactQuill | null>(null);

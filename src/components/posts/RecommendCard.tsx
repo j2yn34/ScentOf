@@ -1,40 +1,19 @@
 import { Link } from "react-router-dom";
-import {
-  collection,
-  getDocs,
-  orderBy,
-  query,
-  Timestamp,
-  where,
-} from "firebase/firestore";
+import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import { db } from "../../database/initialize";
 import { useEffect, useState } from "react";
 import TimeDiff from "../common/timeFormat/TimeDiff";
 import { useSetRecoilState } from "recoil";
 import { hasUserRecommendState } from "../../state/userState";
-
-type RecommendData = {
-  id: string;
-  userId: string;
-  nickname: string;
-  postedDate: Timestamp;
-  title: string;
-};
-
-type RecommendPostProps = {
-  limit: number;
-  currentPage: number;
-  userId?: string;
-  searchTerm?: string;
-};
+import { PostData, RecommendProps } from "../../types";
 
 const RecommendPost = ({
   limit,
   currentPage,
   userId,
   searchTerm,
-}: RecommendPostProps): JSX.Element => {
-  const [recommendDatas, setRecommendDatas] = useState<RecommendData[]>([]);
+}: RecommendProps): JSX.Element => {
+  const [recommendDatas, setRecommendDatas] = useState<PostData[]>([]);
   const hasUserRecommend = useSetRecoilState(hasUserRecommendState);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -59,7 +38,7 @@ const RecommendPost = ({
       const dataArr = result.docs.map((doc) => ({
         ...doc.data(),
         id: doc.id,
-      })) as RecommendData[];
+      })) as PostData[];
 
       if (userId) {
         queryRef = dataArr.filter((post) => post.userId === userId);
