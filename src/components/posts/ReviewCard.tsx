@@ -1,5 +1,13 @@
 import { Link } from "react-router-dom";
-import { collection, getDocs, orderBy, query } from "firebase/firestore";
+import {
+  QueryDocumentSnapshot,
+  QuerySnapshot,
+  collection,
+  getDocs,
+  orderBy,
+  query,
+  where,
+} from "firebase/firestore";
 import { db } from "../../database/initialize";
 import { useEffect, useState } from "react";
 import Rating from "../common/Rating";
@@ -11,36 +19,63 @@ const ReviewCard = ({
   limit,
   currentPage,
   userId,
+  searchTerm,
 }: ReviewProps): JSX.Element => {
   const [reviewDatas, setReviewDatas] = useState<PostData[]>([]);
   const hasUserReview = useSetRecoilState(hasUserReviewState);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const getreviews = async (currentPage: number) => {
+  const getreviews = async (currentPage: number, search?: string) => {
     try {
       setIsLoading(true);
 
       const dbreviews = collection(db, "reviews");
-      const result = await getDocs(
-        query(dbreviews, orderBy("postedDate", "desc"))
-      );
-      const dataArr = result.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-      })) as PostData[];
+      let dataArr: PostData[] = [];
 
-      let filteredPosts = dataArr;
+      if (search) {
+        const brandQuery = query(
+          dbreviews,
+          where("brandName", ">=", searchTerm),
+          where("brandName", "<=", searchTerm + "\uf8ff")
+        );
+        const productQuery = query(
+          dbreviews,
+          where("productName", ">=", searchTerm),
+          where("productName", "<=", searchTerm + "\uf8ff")
+        );
+        const [brandQuerySnapshot, productQuerySnapshot] = await Promise.all([
+          getDocs(brandQuery),
+          getDocs(productQuery),
+        ]);
+
+        const docsToReviewData = (snapshot: QuerySnapshot): PostData[] =>
+          snapshot.docs.map((doc: QueryDocumentSnapshot) => ({
+            ...doc.data(),
+            id: doc.id,
+          })) as PostData[];
+
+        const brandResults = docsToReviewData(brandQuerySnapshot);
+        const productResults = docsToReviewData(productQuerySnapshot);
+
+        dataArr = [...brandResults, ...productResults];
+      } else {
+        const queryRef = query(dbreviews, orderBy("postedDate", "desc"));
+        const result = await getDocs(queryRef);
+        dataArr = result.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        })) as PostData[];
+      }
 
       if (userId) {
-        filteredPosts = dataArr.filter((post) => post.userId === userId);
-        hasUserReview(filteredPosts.length > 0);
-        setReviewDatas(filteredPosts);
+        dataArr = dataArr.filter((post) => post.userId === userId);
+        hasUserReview(dataArr.length > 0);
       }
 
       const startIndex = (currentPage - 1) * limit;
       const endIndex = currentPage * limit;
 
-      setReviewDatas(filteredPosts.slice(startIndex, endIndex));
+      setReviewDatas(dataArr.slice(startIndex, endIndex));
     } catch (error) {
       console.error("리스트를 불러오는 중 오류 발생:", error);
     } finally {
@@ -51,6 +86,10 @@ const ReviewCard = ({
   useEffect(() => {
     getreviews(currentPage);
   }, [currentPage]);
+
+  useEffect(() => {
+    getreviews(1, searchTerm);
+  }, [searchTerm]);
 
   const defaultImage = "/defaultImage.jpg";
 

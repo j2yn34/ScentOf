@@ -17,6 +17,7 @@ export interface ReviewProps {
   limit: number;
   currentPage: number;
   userId?: string;
+  searchTerm?: string;
 }
 
 export interface RecommendProps {
