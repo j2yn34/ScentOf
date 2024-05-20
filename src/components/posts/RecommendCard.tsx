@@ -35,13 +35,13 @@ const RecommendCard = ({
       }
 
       const result = await getDocs(queryRef);
-      const dataArr = result.docs.map((doc) => ({
+      let dataArr = result.docs.map((doc) => ({
         ...doc.data(),
         id: doc.id,
       })) as PostData[];
 
       if (userId) {
-        queryRef = dataArr.filter((post) => post.userId === userId);
+        dataArr = dataArr.filter((post) => post.userId === userId);
         hasUserRecommend(dataArr.length > 0);
       }
 
