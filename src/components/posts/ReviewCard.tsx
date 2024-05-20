@@ -7,7 +7,7 @@ import { useSetRecoilState } from "recoil";
 import { hasUserReviewState } from "../../state/userState";
 import { PostData, ReviewProps } from "../../types";
 
-const ReviewPost = ({
+const ReviewCard = ({
   limit,
   currentPage,
   userId,
@@ -107,4 +107,4 @@ const ReviewPost = ({
   );
 };
 
-export default ReviewPost;
+export default ReviewCard;

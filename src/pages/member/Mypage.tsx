@@ -7,8 +7,8 @@ import {
   hasUserReviewState,
   hasUserRecommendState,
 } from "../../state/userState";
-import ReviewPost from "../../components/posts/ReviewCard";
-import RecommendPost from "../../components/posts/RecommendCard";
+import ReviewCard from "../../components/posts/ReviewCard";
+import RecommendCard from "../../components/posts/RecommendCard";
 import LineButton from "../../components/common/buttons/LineButton";
 
 const Mypage = () => {
@@ -76,7 +76,7 @@ const Mypage = () => {
             <>
               {hasUserReview ? (
                 <div className="flex flex-col">
-                  <ReviewPost
+                  <ReviewCard
                     limit={6}
                     userId={currentUser.uid}
                     currentPage={1}
@@ -104,7 +104,7 @@ const Mypage = () => {
             <>
               {hasUserRecommend ? (
                 <div className="flex flex-col">
-                  <RecommendPost
+                  <RecommendCard
                     limit={6}
                     userId={currentUser.uid}
                     currentPage={1}

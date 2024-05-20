@@ -1,6 +1,6 @@
 import { FormEvent, useState } from "react";
 import SearchReviewPost from "../components/posts/SearchReviewPost";
-import RecommendPost from "../components/posts/RecommendCard";
+import RecommendCard from "../components/posts/RecommendCard";
 
 const SearchPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -37,7 +37,7 @@ const SearchPage = () => {
             <h2 className="text-2xl text-left font-bold mb-6">
               추천 문의 검색 결과
             </h2>
-            <RecommendPost
+            <RecommendCard
               limit={4}
               searchTerm={submittedSearchTerm}
               currentPage={1}

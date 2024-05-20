@@ -7,7 +7,7 @@ import { useSetRecoilState } from "recoil";
 import { hasUserRecommendState } from "../../state/userState";
 import { PostData, RecommendProps } from "../../types";
 
-const RecommendPost = ({
+const RecommendCard = ({
   limit,
   currentPage,
   userId,
@@ -97,4 +97,4 @@ const RecommendPost = ({
   );
 };
 
-export default RecommendPost;
+export default RecommendCard;
