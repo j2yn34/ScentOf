@@ -13,14 +13,7 @@ export interface PostData {
   postedDate: Timestamp;
 }
 
-export interface ReviewProps {
-  limit: number;
-  currentPage: number;
-  userId?: string;
-  searchTerm?: string;
-}
-
-export interface RecommendProps {
+export interface PostProps {
   limit: number;
   currentPage: number;
   userId?: string;

@@ -13,14 +13,14 @@ import { useEffect, useState } from "react";
 import Rating from "../common/Rating";
 import { useSetRecoilState } from "recoil";
 import { hasUserReviewState } from "../../state/userState";
-import { PostData, ReviewProps } from "../../types";
+import { PostData, PostProps } from "../../types";
 
 const ReviewCard = ({
   limit,
   currentPage,
   userId,
   searchTerm,
-}: ReviewProps): JSX.Element => {
+}: PostProps): JSX.Element => {
   const [reviewDatas, setReviewDatas] = useState<PostData[]>([]);
   const hasUserReview = useSetRecoilState(hasUserReviewState);
   const [isLoading, setIsLoading] = useState<boolean>(true);

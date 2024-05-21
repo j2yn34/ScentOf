@@ -5,14 +5,14 @@ import { useEffect, useState } from "react";
 import TimeDiff from "../common/timeFormat/TimeDiff";
 import { useSetRecoilState } from "recoil";
 import { hasUserRecommendState } from "../../state/userState";
-import { PostData, RecommendProps } from "../../types";
+import { PostData, PostProps } from "../../types";
 
 const RecommendCard = ({
   limit,
   currentPage,
   userId,
   searchTerm,
-}: RecommendProps): JSX.Element => {
+}: PostProps): JSX.Element => {
   const [recommendDatas, setRecommendDatas] = useState<PostData[]>([]);
   const hasUserRecommend = useSetRecoilState(hasUserRecommendState);
   const [isLoading, setIsLoading] = useState<boolean>(true);
