@@ -12,10 +12,3 @@ export interface PostData {
   imageUrl?: string;
   postedDate: Timestamp;
 }
-
-export interface PostProps {
-  limit: number;
-  currentPage: number;
-  userId?: string;
-  searchTerm?: string;
-}
