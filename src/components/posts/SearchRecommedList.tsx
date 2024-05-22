@@ -14,36 +14,53 @@ const SearchRecommedList = ({
   searchTerm: string;
 }) => {
   const [searchResult, setSearchResult] = useState<PostData[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const getSearchData = async () => {
-      const dbRecommendations = collection(db, "recommendations");
+      try {
+        setIsLoading(true);
 
-      let queryRef = query(
-        dbRecommendations,
-        where("title", ">=", searchTerm),
-        where("title", "<=", searchTerm + "\uf8ff")
-      );
+        const dbRecommendations = collection(db, "recommendations");
 
-      const result = await getDocs(queryRef);
-      const dataArr = result.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-      })) as PostData[];
+        let queryRef = query(
+          dbRecommendations,
+          where("title", ">=", searchTerm),
+          where("title", "<=", searchTerm + "\uf8ff")
+        );
 
-      const startIndex = (currentPage - 1) * limit;
-      const endIndex = currentPage * limit;
+        const result = await getDocs(queryRef);
+        const dataArr = result.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        })) as PostData[];
 
-      setSearchResult(dataArr.slice(startIndex, endIndex));
+        const startIndex = (currentPage - 1) * limit;
+        const endIndex = currentPage * limit;
+
+        setSearchResult(dataArr.slice(startIndex, endIndex));
+      } catch (error) {
+        console.log("검색 결과를 불러오는 중 오류 발생", error);
+      } finally {
+        setIsLoading(false);
+      }
     };
     getSearchData();
   }, [searchTerm]);
 
   return (
     <>
-      {searchResult.map((post: PostData) => (
-        <RecommendCard data={post} key={post.id} />
-      ))}
+      {isLoading ? (
+        <div className="min-h-[204px] flex items-center justify-center">
+          <span className="loading loading-spinner loading-md text-brown-200"></span>
+        </div>
+      ) : (
+        <>
+          {searchResult.map((post: PostData) => (
+            <RecommendCard data={post} key={post.id} />
+          ))}
+        </>
+      )}
     </>
   );
 };
