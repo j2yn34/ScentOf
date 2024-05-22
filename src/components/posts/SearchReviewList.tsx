@@ -30,21 +30,20 @@ const SearchReviewList = ({
 
         const dbreviews = collection(db, "reviews");
 
-        const brandQuery = query(
-          dbreviews,
-          where("brandName", ">=", searchTerm),
-          where("brandName", "<=", searchTerm + "\uf8ff")
+        const brandQuerySnapshot = getDocs(
+          query(
+            dbreviews,
+            where("brandName", ">=", searchTerm),
+            where("brandName", "<=", searchTerm + "\uf8ff")
+          )
         );
-        const productQuery = query(
-          dbreviews,
-          where("productName", ">=", searchTerm),
-          where("productName", "<=", searchTerm + "\uf8ff")
+        const productQuerySnapshot = getDocs(
+          query(
+            dbreviews,
+            where("productName", ">=", searchTerm),
+            where("productName", "<=", searchTerm + "\uf8ff")
+          )
         );
-
-        const [brandQuerySnapshot, productQuerySnapshot] = await Promise.all([
-          getDocs(brandQuery),
-          getDocs(productQuery),
-        ]);
 
         const docsToReviewData = (snapshot: QuerySnapshot): PostData[] =>
           snapshot.docs.map((doc: QueryDocumentSnapshot) => ({
@@ -52,8 +51,8 @@ const SearchReviewList = ({
             id: doc.id,
           })) as PostData[];
 
-        const brandResults = docsToReviewData(brandQuerySnapshot);
-        const productResults = docsToReviewData(productQuerySnapshot);
+        const brandResults = docsToReviewData(await brandQuerySnapshot);
+        const productResults = docsToReviewData(await productQuerySnapshot);
 
         let dataArr = [...brandResults, ...productResults];
 
