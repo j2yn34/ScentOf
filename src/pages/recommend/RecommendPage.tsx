@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import RecommendCard from "../../components/posts/RecommendCard";
+import RecommendCardList from "../../components/posts/RecommendCardList";
 import Pagination from "../../components/common/Pagination";
 import LineButton from "../../components/common/buttons/LineButton";
 import { useRecoilValue } from "recoil";
@@ -41,7 +41,7 @@ const RecommendPage = (): JSX.Element => {
           글쓰기
         </LineButton>
       </div>
-      <RecommendCard limit={limit} currentPage={currentPage} />
+      <RecommendCardList limit={limit} currentPage={currentPage} />
       <Pagination
         maxPage={maxPage}
         currentPage={currentPage}
