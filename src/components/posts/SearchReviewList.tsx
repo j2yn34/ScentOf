@@ -10,6 +10,8 @@ import {
 import { db } from "../../database/initialize";
 import { PostData } from "../../types";
 import { useState, useEffect } from "react";
+import { useSetRecoilState } from "recoil";
+import { reviewCountState } from "../../state/searchState";
 
 const SearchReviewList = ({
   limit,
@@ -22,6 +24,7 @@ const SearchReviewList = ({
 }) => {
   const [searchResult, setSearchResult] = useState<PostData[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const setReviewCountState = useSetRecoilState(reviewCountState);
 
   useEffect(() => {
     const getSearchData = async () => {
@@ -55,6 +58,7 @@ const SearchReviewList = ({
         const productResults = docsToReviewData(await productQuerySnapshot);
 
         let dataArr = [...brandResults, ...productResults];
+        setReviewCountState(dataArr.length);
 
         const startIndex = (currentPage - 1) * limit;
         const endIndex = currentPage * limit;

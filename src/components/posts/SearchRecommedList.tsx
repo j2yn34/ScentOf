@@ -3,6 +3,8 @@ import RecommendCard from "./RecommendCard";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../database/initialize";
 import { PostData } from "../../types";
+import { useSetRecoilState } from "recoil";
+import { recommendCountState } from "../../state/searchState";
 
 const SearchRecommedList = ({
   limit,
@@ -15,6 +17,7 @@ const SearchRecommedList = ({
 }) => {
   const [searchResult, setSearchResult] = useState<PostData[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const setRecommendCountState = useSetRecoilState(recommendCountState);
 
   useEffect(() => {
     const getSearchData = async () => {
@@ -34,6 +37,7 @@ const SearchRecommedList = ({
           ...doc.data(),
           id: doc.id,
         })) as PostData[];
+        setRecommendCountState(dataArr.length);
 
         const startIndex = (currentPage - 1) * limit;
         const endIndex = currentPage * limit;
