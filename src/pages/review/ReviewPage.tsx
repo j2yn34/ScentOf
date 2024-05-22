@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import ReviewCard from "../../components/posts/ReviewCard";
+import ReviewCardList from "../../components/posts/ReviewCardList";
 import Pagination from "../../components/common/Pagination";
 import LineButton from "../../components/common/buttons/LineButton";
 import { useRecoilValue } from "recoil";
@@ -43,7 +43,7 @@ const ReviewPage = () => {
           글쓰기
         </LineButton>
       </div>
-      <ReviewCard limit={limit} currentPage={currentPage} />
+      <ReviewCardList limit={limit} currentPage={currentPage} />
       <Pagination
         maxPage={maxPage}
         currentPage={currentPage}

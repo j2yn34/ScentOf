@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import ReviewCard from "../components/posts/ReviewCard";
+import ReviewCardList from "../components/posts/ReviewCardList";
 import RecommendCardList from "../components/posts/RecommendCardList";
 
 const Index = () => {
@@ -10,7 +10,7 @@ const Index = () => {
           <h2 className="text-2xl text-left font-bold">향기 리뷰</h2>
           <span className="ml-3.5 text-brown-400">업데이트 된 리뷰</span>
         </div>
-        <ReviewCard limit={3} currentPage={1} />
+        <ReviewCardList limit={3} currentPage={1} />
         <Link to="/review" className="block w-[70px] h-[26px] mx-auto">
           <div className="mt-10 flex justify-center items-center border-b border-brown-500">
             <span className="text-brown-500">더보기</span>
