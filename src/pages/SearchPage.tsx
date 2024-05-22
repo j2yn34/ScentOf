@@ -9,6 +9,7 @@ const SearchPage = () => {
   const [submittedSearchTerm, setSubmittedSearchTerm] = useState("");
   const reviewCount = useRecoilValue(reviewCountState);
   const recommendCount = useRecoilValue(recommendCountState);
+  let totalCount = reviewCount + recommendCount;
 
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -31,9 +32,12 @@ const SearchPage = () => {
       </form>
       {submittedSearchTerm && (
         <>
+          <p className="text-sm">
+            "{submittedSearchTerm}" | 총 {totalCount}개의 글이 검색되었어요.
+          </p>
           <div className="mt-8">
             <h2 className="text-2xl text-left font-bold mb-6">
-              향기 리뷰 검색 결과 ({reviewCount})
+              향기 리뷰 ({reviewCount})
             </h2>
             <SearchReviewList
               limit={6}
@@ -43,7 +47,7 @@ const SearchPage = () => {
           </div>
           <div className="mt-10">
             <h2 className="text-2xl text-left font-bold mb-6">
-              추천 문의 검색 결과 ({recommendCount})
+              추천 문의 ({recommendCount})
             </h2>
             <SearchRecommedList
               limit={4}
