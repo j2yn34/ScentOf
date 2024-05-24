@@ -10,7 +10,7 @@ import {
 import { db } from "../../database/initialize";
 import { PostData } from "../../types";
 import { useState, useEffect } from "react";
-import { useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { reviewCountState } from "../../state/searchState";
 
 const SearchReviewList = ({
@@ -25,6 +25,7 @@ const SearchReviewList = ({
   const [searchResult, setSearchResult] = useState<PostData[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const setReviewCountState = useSetRecoilState(reviewCountState);
+  const reviewCount = useRecoilValue(reviewCountState);
 
   useEffect(() => {
     const getSearchData = async () => {
@@ -78,6 +79,10 @@ const SearchReviewList = ({
       {isLoading ? (
         <div className="min-h-[204px] flex items-center justify-center">
           <span className="loading loading-spinner loading-md text-brown-200"></span>
+        </div>
+      ) : reviewCount === 0 ? (
+        <div className="flex flex-col justify-center items-center w-full bg-beige min-h-[160px] rounded-2xl">
+          <span>검색결과가 없어요.</span>
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">

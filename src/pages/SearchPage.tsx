@@ -26,16 +26,16 @@ const SearchPage = () => {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-        <button type="submit" className="btn primary-btn">
+        <button type="submit" className="btn primary-btn px-6">
           검색
         </button>
       </form>
       {submittedSearchTerm && (
         <>
-          <p className="text-sm">
+          <p className="text-sm pt-4 text-brown-500">
             "{submittedSearchTerm}" | 총 {totalCount}개의 글이 검색되었어요.
           </p>
-          <div className="mt-8">
+          <div className="mt-6">
             <h2 className="text-2xl text-left font-bold mb-6">
               향기 리뷰 ({reviewCount})
             </h2>

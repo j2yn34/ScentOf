@@ -3,7 +3,7 @@ import RecommendCard from "./RecommendCard";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../database/initialize";
 import { PostData } from "../../types";
-import { useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { recommendCountState } from "../../state/searchState";
 
 const SearchRecommedList = ({
@@ -18,6 +18,7 @@ const SearchRecommedList = ({
   const [searchResult, setSearchResult] = useState<PostData[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const setRecommendCountState = useSetRecoilState(recommendCountState);
+  const recommendCount = useRecoilValue(recommendCountState);
 
   useEffect(() => {
     const getSearchData = async () => {
@@ -57,6 +58,10 @@ const SearchRecommedList = ({
       {isLoading ? (
         <div className="min-h-[204px] flex items-center justify-center">
           <span className="loading loading-spinner loading-md text-brown-200"></span>
+        </div>
+      ) : recommendCount === 0 ? (
+        <div className="flex flex-col justify-center items-center w-full bg-beige min-h-[160px] rounded-2xl">
+          <span>검색결과가 없어요.</span>
         </div>
       ) : (
         <>
