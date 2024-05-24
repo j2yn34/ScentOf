@@ -11,9 +11,20 @@ const SearchPage = () => {
   const recommendCount = useRecoilValue(recommendCountState);
   let totalCount = reviewCount + recommendCount;
 
-  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const checkSearchValue = async (searchTerm: string) => {
+    const trimmedSearchTerm = searchTerm.trim();
+    if (trimmedSearchTerm === "") {
+      alert("검색어를 입력해 주세요.");
+      return false;
+    }
+    return true;
+  };
+
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setSubmittedSearchTerm(searchTerm);
+    if (await checkSearchValue(searchTerm)) {
+      setSubmittedSearchTerm(searchTerm);
+    }
   };
 
   return (
