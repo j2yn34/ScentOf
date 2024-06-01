@@ -10,15 +10,15 @@ const ReviewCard = ({ data }: { data: PostData }): JSX.Element => {
       to={`/review/${data.id}`}
       className="min-h-[204px] card bg-beige p-4 hover:drop-shadow-md transition-all outline-none"
     >
-      <div className="flex flex-auto">
-        <figure className="rounded md:shrink-0 mb-2 mr-3.5">
+      <div className="flex">
+        <figure className="rounded mb-2 mr-3.5 flex-shrink-0 w-[120px] h-[140px]">
           <img
-            className="rounded w-[120px] h-[140px]"
+            className="rounded w-full h-full object-cover"
             src={data.imageUrl || defaultImage}
             alt={data.imageUrl ? "이미지" : "기본 이미지"}
           />
         </figure>
-        <div className="card-body p-0 gap-0">
+        <div className="card-body p-0 gap-0 flex-grow">
           <span className="text-sm text-brown-300">{data.brandName}</span>
           <h2 className="card-title py-1 text-brown-900">{data.productName}</h2>
           <p className="text-sm text-brown-500 mt-1 pb-2">{data.title}</p>
