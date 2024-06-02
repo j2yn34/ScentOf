@@ -1,15 +1,29 @@
 import { Link } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { isLoggedInState } from "../../state/userState";
+import { useState } from "react";
 
 const Header = () => {
   const isLoggedIn = useRecoilValue(isLoggedInState);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const closeMenu = () => {
+    setIsOpen(false);
+  };
 
   return (
     <div className="fixed z-10 w-full navbar bg-beige p-0">
       <div className="flex w-full xl:container xl:m-auto">
         <div className="dropdown ">
-          <label tabIndex={0} className="btn btn-ghost lg:hidden">
+          <label
+            tabIndex={0}
+            className="btn btn-ghost lg:hidden"
+            onClick={toggleMenu}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5"
@@ -25,21 +39,23 @@ const Header = () => {
               />
             </svg>
           </label>
-          <ul
-            tabIndex={0}
-            className="menu menu-sm dropdown-content mt-2 z-[1] p-0 shadow bg-white w-52"
-          >
-            <li className="hover:bg-beige">
-              <Link to="/review">
-                <span className="py-4">향기 리뷰</span>
-              </Link>
-            </li>
-            <li className="hover:bg-beige">
-              <Link to="/recommend">
-                <span className="py-4">추천 문의</span>
-              </Link>
-            </li>
-          </ul>
+          {isOpen && (
+            <ul
+              tabIndex={0}
+              className="menu menu-sm dropdown-content mt-2 z-[1] p-0 shadow bg-white w-52"
+            >
+              <li className="hover:bg-beige" onClick={closeMenu}>
+                <Link to="/review">
+                  <span className="py-4">향기 리뷰</span>
+                </Link>
+              </li>
+              <li className="hover:bg-beige" onClick={closeMenu}>
+                <Link to="/recommend">
+                  <span className="py-4">추천 문의</span>
+                </Link>
+              </li>
+            </ul>
+          )}
         </div>
         <Link to="/" className="logo ml-2">
           <svg
