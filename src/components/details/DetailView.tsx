@@ -43,7 +43,11 @@ const DetailView = ({ postId, postType }: DetailViewProps) => {
   }, [postId, postType]);
 
   if (!post) {
-    return <div>로딩중...</div>;
+    return (
+      <div className="min-h-[204px] flex items-center justify-center">
+        <span className="loading loading-spinner loading-md text-brown-200"></span>
+      </div>
+    );
   }
 
   const currentUser = auth.currentUser;
