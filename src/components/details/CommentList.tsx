@@ -27,6 +27,7 @@ interface CommentListProps {
 }
 
 const CommentList: React.FC<CommentListProps> = ({ postId }) => {
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [commentsDatas, setCommentsDatas] = useState<CommentData[]>([]);
   const [editing, setEditing] = useState(false);
   const [newComment, setNewComment] = useState("");
@@ -38,6 +39,7 @@ const CommentList: React.FC<CommentListProps> = ({ postId }) => {
 
   const getComments = async () => {
     try {
+      setIsLoading(true);
       const commentsRef = collection(db, "comments");
       const commentsQuery = query(
         commentsRef,
@@ -52,9 +54,11 @@ const CommentList: React.FC<CommentListProps> = ({ postId }) => {
           data.push({ ...doc.data(), id: doc.id } as CommentData);
         });
         setCommentsDatas(data);
+        setIsLoading(false);
       });
     } catch (error) {
       console.error("댓글 불러오는 중 오류 발생: ", error);
+      setIsLoading(false);
     }
   };
 
@@ -97,66 +101,78 @@ const CommentList: React.FC<CommentListProps> = ({ postId }) => {
 
   return (
     <>
-      {commentsDatas.map((comment) => (
-        <div
-          key={comment.id}
-          className="px-4 py-3 min-h-[100px] bg-beige border-t border-brown-200"
-        >
-          <div className="mb-3">
-            <div className="flex justify-between">
-              <div className="flex items-center">
-                <span className="mr-4 text-brown-500">{comment.nickname}</span>
-                <div className="text-brown-400 text-sm">
-                  <CustomDateTime timestamp={comment.createdDate.toDate()} />
-                </div>
-              </div>
-              {currentUser &&
-                currentUser.uid === comment.userId &&
-                !editing && (
-                  <div className="flex">
-                    <button
-                      onClick={onDeleteClick(comment)}
-                      className="text-sm text-red"
-                    >
-                      삭제
-                    </button>
-                    <button
-                      onClick={onEditClick(comment)}
-                      className="text-sm ml-4"
-                    >
-                      수정
-                    </button>
-                  </div>
-                )}
-            </div>
-            {editing && editingComment?.id === comment.id ? (
-              <div className="flex">
-                <textarea
-                  value={newComment}
-                  onChange={(e) => setNewComment(e.target.value)}
-                  className="my-2 p-2 w-full bg-beige placeholder:text-brown-300 placeholder:italic"
-                />
-                <div className="flex items-center">
-                  <button
-                    onClick={onCancelClick}
-                    className="text-sm w-[36px] h-[30px] ml-2"
-                  >
-                    취소
-                  </button>
-                  <button
-                    onClick={onSaveClick}
-                    className="text-sm text-green min-w-[36px] h-[30px] ml-3"
-                  >
-                    저장
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <div className="pt-3 text-brown-600">{comment.content}</div>
-            )}
-          </div>
+      {isLoading ? (
+        <div className="min-h-[204px] flex items-center justify-center">
+          <span className="loading loading-spinner loading-md text-brown-200"></span>
         </div>
-      ))}
+      ) : (
+        <>
+          {commentsDatas.map((comment) => (
+            <div
+              key={comment.id}
+              className="px-4 py-3 min-h-[100px] bg-beige border-t border-brown-200"
+            >
+              <div className="mb-3">
+                <div className="flex justify-between">
+                  <div className="flex items-center">
+                    <span className="mr-4 text-brown-500">
+                      {comment.nickname}
+                    </span>
+                    <div className="text-brown-400 text-sm">
+                      <CustomDateTime
+                        timestamp={comment.createdDate.toDate()}
+                      />
+                    </div>
+                  </div>
+                  {currentUser &&
+                    currentUser.uid === comment.userId &&
+                    !editing && (
+                      <div className="flex">
+                        <button
+                          onClick={onDeleteClick(comment)}
+                          className="text-sm text-red"
+                        >
+                          삭제
+                        </button>
+                        <button
+                          onClick={onEditClick(comment)}
+                          className="text-sm ml-4"
+                        >
+                          수정
+                        </button>
+                      </div>
+                    )}
+                </div>
+                {editing && editingComment?.id === comment.id ? (
+                  <div className="flex">
+                    <textarea
+                      value={newComment}
+                      onChange={(e) => setNewComment(e.target.value)}
+                      className="my-2 p-2 w-full bg-beige placeholder:text-brown-300 placeholder:italic"
+                    />
+                    <div className="flex items-center">
+                      <button
+                        onClick={onCancelClick}
+                        className="text-sm w-[36px] h-[30px] ml-2"
+                      >
+                        취소
+                      </button>
+                      <button
+                        onClick={onSaveClick}
+                        className="text-sm text-green min-w-[36px] h-[30px] ml-3"
+                      >
+                        저장
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="pt-3 text-brown-600">{comment.content}</div>
+                )}
+              </div>
+            </div>
+          ))}
+        </>
+      )}
     </>
   );
 };
