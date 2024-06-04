@@ -96,7 +96,7 @@ const DetailView = ({ postId, postType }: DetailViewProps) => {
             </figure>
             <div className="card-body p-0 gap-0">
               <span className="text-sm text-brown-300">{post.brandName}</span>
-              <h2 className="card-title py-1 text-brown-900">
+              <h2 className="card-title py-1 text-brown-900 md:text-xl text-lg">
                 {post.productName}
               </h2>
               <Rating
@@ -110,10 +110,10 @@ const DetailView = ({ postId, postType }: DetailViewProps) => {
         </div>
       )}
       <div className="flex flex-col">
-        <div className="flex justify-between mt-3 mb-2">
-          <h3 className="text-xl px-2">{post.title}</h3>
-          <div className="flex text-brown-300">
-            <span className="mx-4">{post.nickname}</span>
+        <div className="flex md:flex-row flex-col-reverse justify-between mt-3 mb-2 px-2">
+          <h3 className="text-xl pr-2 mt-2 md:m-0">{post.title}</h3>
+          <div className="flex text-brown-300 md:text-base text-sm">
+            <span className="mr-4">{post.nickname}</span>
             <CustomDateTime timestamp={post.postedDate.toDate()} />
           </div>
         </div>
