@@ -34,6 +34,7 @@ const CommentList: React.FC<CommentListProps> = ({ postId }) => {
   const [editingComment, setEditingComment] = useState<CommentData | null>(
     null
   );
+  const [commentsCount, setCommentsCount] = useState<number>(0);
 
   const currentUser = auth.currentUser;
 
@@ -54,6 +55,7 @@ const CommentList: React.FC<CommentListProps> = ({ postId }) => {
           data.push({ ...doc.data(), id: doc.id } as CommentData);
         });
         setCommentsDatas(data);
+        setCommentsCount(data.length);
         setIsLoading(false);
       });
     } catch (error) {
@@ -107,6 +109,7 @@ const CommentList: React.FC<CommentListProps> = ({ postId }) => {
         </div>
       ) : (
         <>
+          <h4 className="mb-4 font-bold">댓글 ({commentsCount})</h4>
           {commentsDatas.map((comment) => (
             <div
               key={comment.id}
