@@ -44,33 +44,35 @@ const Mypage = () => {
           <div className="flex justify-end">
             <button
               onClick={onLogOutClick}
-              className="btn btn-sm border-brown-300"
+              className="btn btn-sm border-brown-300 mb-4"
             >
               로그아웃
             </button>
           </div>
-          <div className="mb-8 lg:mb-10 flex text-2xl text-left font-bold">
-            <span className="mr-3">{currentUser.displayName} 님의</span>
-            <button
-              onClick={() => setActiveTab("review")}
-              className={`mr-3 ${
-                activeTab === "review"
-                  ? "underline underline-offset-8"
-                  : "text-brown-200"
-              }`}
-            >
-              향기 리뷰
-            </button>
-            <button
-              onClick={() => setActiveTab("recommend")}
-              className={`${
-                activeTab === "recommend"
-                  ? "underline underline-offset-8"
-                  : "text-brown-200"
-              }`}
-            >
-              추천 문의
-            </button>
+          <div className="mb-8 lg:mb-10 flex flex-col md:flex-row justify-start text-2xl text-left font-bold">
+            <span className="mr-3 mb-2">{currentUser.displayName} 님의</span>
+            <div>
+              <button
+                onClick={() => setActiveTab("review")}
+                className={`mr-3 ${
+                  activeTab === "review"
+                    ? "underline underline-offset-8"
+                    : "text-brown-200"
+                }`}
+              >
+                향기 리뷰
+              </button>
+              <button
+                onClick={() => setActiveTab("recommend")}
+                className={`${
+                  activeTab === "recommend"
+                    ? "underline underline-offset-8"
+                    : "text-brown-200"
+                }`}
+              >
+                추천 문의
+              </button>
+            </div>
           </div>
           {activeTab === "review" ? (
             <>
