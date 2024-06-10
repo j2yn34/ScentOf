@@ -30,12 +30,14 @@ const RecommendPage = (): JSX.Element => {
 
   return (
     <div className="pt-14 px-4">
-      <div className="flex items-center justify-between mb-5 lg:mb-8 ">
-        <div className="flex items-center">
-          <h2 className="text-2xl lg:text-2xl text-left font-bold">
+      <div className="flex items-end justify-between mb-5 lg:mb-8 ">
+        <div className="flex flex-col items-start md:flex-row md:items-center">
+          <h2 className="text-2xl lg:text-2xl text-left font-bold mr-3.5 mb-2">
             추천 문의
           </h2>
-          <span className="ml-3.5 text-brown-400">추천해 주세요~</span>
+          <span className="text-brown-400 text-sm md:text-base">
+            추천해 주세요~
+          </span>
         </div>
         <LineButton path={`${isLoggedIn ? "/recommend/write" : "/login"}`}>
           글쓰기
