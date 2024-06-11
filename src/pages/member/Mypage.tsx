@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { auth } from "../../database/initialize";
 import { useNavigate } from "react-router-dom";
@@ -10,14 +10,25 @@ import {
 import UserReviewList from "../../components/posts/UserReviewList";
 import UserRecommendList from "../../components/posts/UserRecommendList";
 import LineButton from "../../components/common/buttons/LineButton";
+import { User, onAuthStateChanged } from "firebase/auth";
 
 const Mypage = () => {
   const navigate = useNavigate();
   const setIsLoggedIn = useSetRecoilState(isLoggedInState);
-  const currentUser = auth.currentUser;
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("review");
   const hasUserReview = useRecoilValue(hasUserReviewState);
   const hasUserRecommend = useRecoilValue(hasUserRecommendState);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setCurrentUser(user);
+      setIsLoggedIn(!!user);
+      setIsLoading(false);
+    });
+    return () => unsubscribe();
+  }, [setIsLoggedIn]);
 
   const onLogOutClick = () => {
     const ok = confirm("로그아웃 할까요?");
@@ -36,6 +47,14 @@ const Mypage = () => {
       navigate("/recommend/write");
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-[204px] flex items-center justify-center">
+        <span className="loading loading-spinner loading-md text-brown-200"></span>
+      </div>
+    );
+  }
 
   return (
     <>
