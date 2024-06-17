@@ -12,3 +12,12 @@ export interface PostData {
   imageUrl?: string;
   postedDate: Timestamp;
 }
+
+export interface CommentData {
+  id: string;
+  postId: string;
+  content: string;
+  nickname: string;
+  userId: string;
+  createdDate: Timestamp;
+}

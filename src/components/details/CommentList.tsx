@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import {
-  Timestamp,
   collection,
   deleteDoc,
   doc,
@@ -12,21 +11,9 @@ import {
 } from "firebase/firestore";
 import { db, auth } from "../../database/initialize";
 import CustomDateTime from "../common/timeFormat/DateWithTime";
+import { CommentData } from "../../types";
 
-type CommentData = {
-  id: string;
-  postId: string;
-  content: string;
-  nickname: string;
-  userId: string;
-  createdDate: Timestamp;
-};
-
-interface CommentListProps {
-  postId: string;
-}
-
-const CommentList: React.FC<CommentListProps> = ({ postId }) => {
+const CommentList = ({ postId }: { postId: string }) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [commentsDatas, setCommentsDatas] = useState<CommentData[]>([]);
   const [editing, setEditing] = useState(false);
