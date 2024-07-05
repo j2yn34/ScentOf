@@ -43,12 +43,19 @@ const RecommendWrite = () => {
     }
   };
 
+  const isContentEmpty = (htmlContent: string): boolean => {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(htmlContent, "text/html");
+    const textContent = doc.body.textContent || "";
+    return textContent.trim() === "";
+  };
+
   const handleUpdate = async () => {
     try {
       if (!postId) {
         return;
       }
-      if (!content || "<p><br></p>") {
+      if (isContentEmpty(content)) {
         alert("내용을 입력해 주세요.");
         return;
       }
@@ -57,7 +64,7 @@ const RecommendWrite = () => {
         title: title,
         content: content,
       });
-      console.log(content);
+      console.log("수정 완료");
       navigate(-1);
     } catch (error) {
       console.error("수정 오류:", error);
@@ -66,7 +73,7 @@ const RecommendWrite = () => {
 
   const handleAdd = async () => {
     try {
-      if (!content || content.trim() === "") {
+      if (isContentEmpty(content)) {
         alert("내용을 입력해 주세요.");
         return;
       }
@@ -89,6 +96,7 @@ const RecommendWrite = () => {
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
     if (isEditing) {
       handleUpdate();
     } else {
