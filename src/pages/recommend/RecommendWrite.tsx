@@ -48,12 +48,16 @@ const RecommendWrite = () => {
       if (!postId) {
         return;
       }
+      if (!content || "<p><br></p>") {
+        alert("내용을 입력해 주세요.");
+        return;
+      }
       const docRef = doc(db, "recommendations", postId);
       await updateDoc(docRef, {
         title: title,
         content: content,
       });
-      console.log("수정 완료");
+      console.log(content);
       navigate(-1);
     } catch (error) {
       console.error("수정 오류:", error);
@@ -62,6 +66,10 @@ const RecommendWrite = () => {
 
   const handleAdd = async () => {
     try {
+      if (!content || content.trim() === "") {
+        alert("내용을 입력해 주세요.");
+        return;
+      }
       const currentUser = auth.currentUser;
       if (currentUser) {
         const docRef = await addDoc(collection(db, "recommendations"), {
@@ -88,9 +96,13 @@ const RecommendWrite = () => {
     }
   };
 
-  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const onChangeTitle = (event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
     setTitle(value);
+  };
+
+  const onChangeContent = (value: string) => {
+    setContent(value);
   };
 
   return (
@@ -109,7 +121,7 @@ const RecommendWrite = () => {
             name="title"
             placeholder="제목을 입력해 주세요."
             value={title}
-            onChange={onChange}
+            onChange={onChangeTitle}
             className="w-full text-base bg-beige mb-4 p-3 placeholder:text-brown-300 placeholder:italic placeholder:text-sm"
             required
           />
@@ -121,7 +133,7 @@ const RecommendWrite = () => {
             }}
             value={content}
             modules={modules}
-            onChange={setContent}
+            onChange={onChangeContent}
             placeholder="추천 받고 싶은 제품이나 향에 대해 작성해 주세요."
             className="w-full bg-beige"
           />
